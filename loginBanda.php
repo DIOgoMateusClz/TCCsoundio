@@ -30,7 +30,8 @@
 
 <!-- Formulário de login -->
 <form action="loginBandaBD.php" method="POST" enctype="multipart/form-data">
-
+<div class="container mt-5">
+    <div class="jumbotron text-left">
     <!-- Campo para o email -->
     <div class="form-floating mb-3 mt-3">
         <input type="email" class="form-control" id="emailBanda" placeholder="Informe o email" name="emailBanda" required>
@@ -43,11 +44,17 @@
         <label for="senhaBanda" class="form-label">*Senha:</label>
     </div>
 
+    <div class="jumbotron text-center">
+      <a <?php if($pagina == 'telaCadastroBanda')
+      {echo 'active';}?> href="telaCadastroBanda.php?pagina=telaCadastroBanda" title="Ir para cadastro">
+      <h4><p style="color:Black;"><strong>Não possui conta? Cadastre-se agora!</strong></h4></p></a>
+</div>
+
     <!-- Botão de envio -->
     <div class="text-center" style="margin-top:30px; margin-bottom:30px;">
         <button type="submit" class="btn btn-outline-dark btn-lg">Entrar</button>
     </div>
-
+    </div>    </div>
 </form>
 
 <?php include("footer.php"); ?>

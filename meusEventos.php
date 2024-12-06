@@ -1,33 +1,57 @@
-<?php include("header.php")?>
+<?php
+include("header.php");
+include("validarSessao.php"); // Verifica se o usuário está logado
+include("conexaoBD.php"); // Conexão com o banco de dados
+
+// Verifica se a banda está logada
+if (!isset($_SESSION['idBanda'])) {
+    echo "Erro: Banda não encontrada. Faça login novamente.";
+    exit;
+}
+
+// Obtém o ID da banda logada da sessão
+$idBanda = $_SESSION['idBanda'];
+
+?>
+
 <title>Meus Eventos</title>
 
+<div class="container mt-5">
+    <div class="jumbotron text-left">
+        <h2><strong>Meus Eventos</strong></h2>
+        <br>
 
-<!--  <h1><strong>_______________________________________________________________________</strong></h1> -->
-<div class="jumbotron text-left">
-    <h2><strong>Meus Eventos</strong></h2>
-<br><br>
+        <?php
+        // Consulta SQL para obter eventos relacionados à banda logada
+        $sql = "SELECT e.idEvento, e.nomeEvento, e.dataEvento, e.fotoEvento 
+                FROM eventos e
+                WHERE e.idBanda = ?"; // Agora busca pelos eventos da banda logada
+        
+        $stmt = $link->prepare($sql);
+        $stmt->bind_param("i", $idBanda); // Passa o idBanda para a consulta
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-<div class="media">
-  <div class="media-left">
+        if ($result->num_rows > 0) {
+            echo '<ul class="list-group">';
+            while ($row = $result->fetch_assoc()) {
+                echo '<a href="verEventoBanda.php?idEvento=' . $row["idEvento"] . '" class="list-group-item list-group-item-action d-flex align-items-center text-decoration-none text-dark">';
+                echo '<img src="' . htmlspecialchars($row["fotoEvento"]) . '" alt="' . htmlspecialchars($row["nomeEvento"]) . '" class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">';
+                echo '<div class="flex-grow-1">';
+                echo '<strong>' . htmlspecialchars($row["nomeEvento"]) . '</strong>';
+                echo '</div>';
+                echo '<span class="badge bg-warning text-dark">' . date("d/m/Y", strtotime($row["dataEvento"])) . '</span>';
+                echo '</a>';
+            }
+            echo '</ul>';
+        } else {
+            echo "<p>Nenhum evento encontrado.</p>";
+        }
 
-    <img src="img/voltersEvent.jpg" class="rounded-square" alt="Cinque Terre" width="400" height="400">
-  </div>
-  <div class="media-body">
-  <h3 class="media-heading"><strong>&nbsp;&nbsp;Show The Volters</strong></h3>
-
-
-    <p><h6>&nbsp;&nbsp;&nbsp;&nbsp;Data:<p style="color:Orange;">&nbsp;&nbsp;&nbsp;&nbsp;14/09/2024</p></h6></p>
-    <p><h6>&nbsp;&nbsp;&nbsp;&nbsp;Hora:<p style="color:Orange;">&nbsp;&nbsp;&nbsp;&nbsp;21:00</p></h6></p>
-    <p><h6>&nbsp;&nbsp;&nbsp;&nbsp;Valor:<p style="color:Orange;">&nbsp;&nbsp;&nbsp;&nbsp;00,00</p></h6></p>
-    <p><h6>&nbsp;&nbsp;&nbsp;&nbsp;Local:<p style="color:Orange;">&nbsp;&nbsp;&nbsp;&nbsp;Bunker Beer</p></h6></p>
-    <p><h6>&nbsp;&nbsp;&nbsp;&nbsp;Endereço:<p style="color:Orange;">&nbsp;&nbsp;&nbsp;&nbsp;Rua blaublau - 129 - jardim xablau - area 1</p></h6></p>
-    <p><h6>&nbsp;&nbsp;&nbsp;&nbsp;Cidade:<p style="color:Orange;">&nbsp;&nbsp;&nbsp;&nbsp;Telêmaco Borba - PR</p></h6></p>
-    <div class="text-right"><p style="color:Orange;"><img src="icones/edit.png"width="50" height="50"></p></div>
-
-    
-    
-  </div>
+        $stmt->close();
+        $link->close();
+        ?>
+    </div>
 </div>
 
-</body>
-<?php include("footer.php");
+<?php include("footer.php"); ?>

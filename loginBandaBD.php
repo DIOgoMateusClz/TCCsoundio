@@ -13,7 +13,7 @@
     $senhaBanda = mysqli_real_escape_string($link, $_POST['senhaBanda']);
 
     // Preparar a consulta SQL usando prepared statements para maior segurança
-    $buscarLogin = "SELECT emailBanda, nomeBanda, senhaBanda FROM bandas WHERE emailBanda = ? and senhaBanda = md5(?)";
+    $buscarLogin = "SELECT idBanda, emailBanda, nomeBanda, senhaBanda FROM bandas WHERE emailBanda = ? and senhaBanda = md5(?)";
     $stmt = mysqli_prepare($link, $buscarLogin);
     mysqli_stmt_bind_param($stmt, 'ss', $emailBanda, $senhaBanda);
     mysqli_stmt_execute($stmt);
@@ -23,8 +23,10 @@
     if($registro = mysqli_fetch_assoc($resultado)){
         // Verificar a senha usando password_verify (se você estiver usando password_hash para armazená-la)
         //if(password_verify($senhaEmpresa, $registro['senhaEmpresa'])){
+            $_SESSION['idBanda'] = $registro['idBanda'];
             $_SESSION['emailBanda'] = $registro['emailBanda'];
             $_SESSION['nomeBanda'] = $registro['nomeBanda'];
+            $_SESSION['tipoUsuario'] = 'banda'; // ou 'empresa', conforme o caso
 
             // Redirecionar para a página de início
             header('location:inicio.php?pagina=inicio');

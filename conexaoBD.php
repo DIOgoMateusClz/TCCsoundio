@@ -13,6 +13,6 @@ if(!$link) {
     die("<p>Erro ao tentar conectar ao servidor de banco de dados. Por favor, tente novamente mais tarde.</p>");
 } else {
     // Ideal para ambiente de desenvolvimento
-    echo "<p>Conexão estabelecida com sucesso!</p>";
+    //echo "<p>Conexão estabelecida com sucesso!</p>";
 }
 ?>

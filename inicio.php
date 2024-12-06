@@ -1,111 +1,125 @@
 <?php include("validarSessao.php"); ?>
 <?php include("header.php")?>
-
-<title>Login Artista</title>
-</style>
-<style>
-  /* Make the image fully responsive */
-  .carousel-inner img {
-    width: 100%;
-    height: 100%;
-  }
-  </style>
-  <div class="text-center">
-  <h2><strong>DESTAQUES</strong></h2>
-</div>
-<body class="w3-light-grey w3-content" style="max-width:1700px" >
-<div id="demo" class="carousel slide" data-ride="carousel">
-  <ul class="carousel-indicators">
-    <li data-target="0" data-slide-to="0" class="active"></li>
-    <li data-target="1" data-slide-to="1"></li>
-    <li data-target="2" data-slide-to="2"></li>
-  </ul>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="img/kartusDestaque.png" alt="kartus" width="900" height="300">
-      <div class="carousel-caption">
-        <h3><strong>KARTUS</strong></h3>
-        <p>rock/metal</p>
-      </div>   
-    </div>
-    <div class="carousel-item">
-      <img src="img/voltersDestaque.png" alt="volters" width="900" height="300">
-      <div class="carousel-caption">
-        <h3><strong>The Volters</strong></h3>
-        <p>Punk/Hardcore</p>
-      </div>   
-    </div>
-    <div class="carousel-item">
-      <img src="img/eufoniksDestaque.png" alt="eufoniks" width="900" height="300">
-      <div class="carousel-caption">
-        <h3><strong>Eufoniks</strong></h3>
-        <p>Pop Rock</p>
-      </div>   
-    </div>
-  </div>
-  <a class="carousel-control-prev" href="#demo" data-slide="prev">
-    <span class="carousel-control-prev-icon"></span>
-  </a>
-  <a class="carousel-control-next" href="#demo" data-slide="next">
-    <span class="carousel-control-next-icon"></span>
-  </a>
-</div>
-
+<?php include("conexaoBD.php"); ?>
+<?php $pagina = isset($pagina) ? $pagina : ''; ?>
 <!--  <h1><strong>_______________________________________________________________________</strong></h1> -->
-<div class="jumbotron text-left">
-    <h2><strong>BANDAS</strong></h2>
+<div class="container mt-5">
+    <div class="jumbotron text-left">
+    <h1><strong>BANDAS</strong></h1>
 <br><br>
 
+<?php
 
-    <!-- Left-aligned -->
-<div class="media">
-  <div class="media-left">
-    <img src="img/logokartus.png" class="rounded-circle" alt="Cinque Terre" width="140" height="140">
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading"><strong>&nbsp;KARTUS</strong></h4>
-    <p>&nbsp;&nbsp;Rock/Metal</p>
-    <div class="text-right"><p style="color:Orange;"><img src="icones/icon-music.png"width="20" height="20">5,8</p></div>
-  </div>
+// Consulta SQL para obter bandas aleatórias
+$sql = "SELECT idBanda, nomeBanda, fotoBanda, rock, heavyMetal, punk, hardcore, sertanejo, pagode, samba, gospel, rap, funk, MPB, estadoBanda FROM bandas ORDER BY RAND() LIMIT 5";
+$result = $link->query($sql);
+
+if ($result->num_rows > 0) {
+    // Loop para exibir cada banda
+    while($row = $result->fetch_assoc()) {
+        // Definindo os gêneros da banda de acordo com as colunas booleanas
+        $generos = [];
+        if ($row['rock']) $generos[] = "Rock";
+        if ($row['heavyMetal']) $generos[] = "Heavy Metal";
+        if ($row['punk']) $generos[] = "Punk";
+        if ($row['hardcore']) $generos[] = "Hardcore";
+        if ($row['sertanejo']) $generos[] = "Sertanejo";
+        if ($row['pagode']) $generos[] = "Pagode";
+        if ($row['samba']) $generos[] = "Samba";
+        if ($row['gospel']) $generos[] = "Gospel";
+        if ($row['rap']) $generos[] = "Rap";
+        if ($row['funk']) $generos[] = "Funk";
+        if ($row['MPB']) $generos[] = "MPB";
+        
+  // Convertendo a lista de gêneros para uma string separada por vírgulas
+$generosTexto = implode(", ", $generos);
+
+echo '
+<div class="d-flex align-items-start mb-4">
+    <div class="me-3">
+        <img src="' . $row["fotoBanda"] . '" class="rounded-circle" alt="' . $row["nomeBanda"] . '" width="140" height="140">
+    </div>
+    <div>
+        <h2 class="h4"><strong>' . $row["nomeBanda"] . '</strong></h2>
+        <p class="mb-1"><strong>Gênero:</strong> ' . $generosTexto . '</p>
+        <p class="mb-1"><strong>Estado:</strong> ' . $row["estadoBanda"] . '</p>
+        <a href="perfisBandas.php?idBanda=' . $row["idBanda"] . '">Ver Perfil</a>
+    </div>
 </div>
-<br>
-<div class="media">
-  <div class="media-left">
-    <img src="img/logoVolters.png" class="rounded-circle" alt="Cinque Terre" width="140" height="140">
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading"><strong>&nbsp;The Volters</strong></h4>
-    <p>&nbsp;&nbsp;Punk/Hardcore</p>
-    <div class="text-right"><p style="color:Orange;"><img src="icones/icon-music.png"width="20" height="20">5,8</p></div>
-  </div>
-</div>
-<br>
-<div class="media">
-  <div class="media-left">
-    <img src="img/logoEufoniks.png" class="rounded-circle" alt="Cinque Terre" width="140" height="140">
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading"><strong>&nbsp;Eufoniks</strong></h4>
-    <p>&nbsp;&nbsp;Pop Rock/Classic Rock</p>
-    <div class="text-right"><p style="color:Orange;"><img src="icones/icon-music.png"width="20" height="20">5,8</p></div>
-  </div>
-</div>
-<br>
-<div class="media">
-  <div class="media-left">
-    <img src="img/logoGroselha.png" class="rounded-circle" alt="Cinque Terre" width="140" height="140">
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading"><strong>&nbsp;Groselha Cry</strong></h4>
-    <p>&nbsp;&nbsp;Pop Rock/Pop Punk</p>
-    <div class="text-right"><p style="color:Orange;"><img src="icones/icon-music.png"width="20" height="20">5,8</p></div>
-  </div>
-</div>
+';
+    }
+} else {
+    echo "<p>Nenhuma banda encontrada.</p>";
+}
+
+
+?>
 
       <div class="jumbotron text-center">
-      <a <?php if($pagina == 'vermaisbandas')
-      {echo 'active';}?> href="#verMaisBandas.php?pagina=verMaisBandas" title="Ver mais...">
-      <h4><p style="color:Black;"><strong>Ver Mais<strong></h4></p></a>
+      <a <?php if($pagina == 'bandas')
+      {echo 'active';}?> href="bandas.php?pagina=bandas" title="Ver mais...">
+      <h4><p style="color:Black;"><strong>Ver Mais</strong></h4></p></a>
 </div>
-</body>
+
+<div class="container mt-5">
+    <div class="jumbotron text-left">
+    <h1><strong>EMPRESAS</strong></h1>
+    <br><br>
+
+    <?php
+    // Consulta SQL para obter empresas aleatórias
+    $sql = "SELECT idEmpresa, nomeEmpresa, fotoEmpresa, bar, lanchonete, restaurante, casadeShows, pizzaria, centrodeEventos, estadoEmpresa FROM empresas ORDER BY RAND() LIMIT 5";
+    $result = $link->query($sql);
+
+    if ($result->num_rows > 0) {
+        // Loop para exibir cada Empresa
+        while($row = $result->fetch_assoc()) {
+            // Definindo os tipos da empresa de acordo com as colunas booleanas
+            $tipo = [];
+            if ($row['bar']) $tipo[] = "Bar";
+            if ($row['lanchonete']) $tipo[] = "Lanchonete";
+            if ($row['restaurante']) $tipo[] = "Restaurante";
+            if ($row['casadeShows']) $tipo[] = "Casa de Shows";
+            if ($row['pizzaria']) $tipo[] = "Pizzaria";
+            if ($row['centrodeEventos']) $tipo[] = "Centro de Eventos";
+            
+         // Convertendo a lista de tipos para uma string separada por vírgulas
+$tipoTexto = implode(", ", $tipo);
+
+echo '
+<div class="d-flex align-items-start mb-4">
+    <div class="me-3">
+        <img src="' . $row["fotoEmpresa"] . '" class="rounded-circle" alt="' . $row["nomeEmpresa"] . '" width="140" height="140">
+    </div>
+    <div>
+        <h2 class="h4"><strong>' . $row["nomeEmpresa"] . '</strong></h2>
+        <p class="mb-1"><strong>Tipo:</strong> ' . $tipoTexto . '</p>
+        <p class="mb-1"><strong>Estado:</strong> ' . $row["estadoEmpresa"] . '</p>
+        <a href="perfisEmpresas.php?idEmpresa=' . $row["idEmpresa"] . '">Ver Perfil</a>
+    </div>
+</div>
+';
+
+        }
+    } else {
+        echo "<p>Nenhuma Empresa encontrada.</p>";
+    }
+
+// Fechando a conexão corretamente
+$link->close();
+?>
+ </div> 
+
+      <div class="jumbotron text-center">
+      <a <?php if($pagina == 'locais')
+      {echo 'active';}?> href="locais.php?pagina=locais" title="Ver mais...">
+      <h4><p style="color:Black;"><strong>Ver Mais</strong></h4></p></a>
+     
+      <div class="jumbotron text-center">
+      <a <?php if($pagina == 'locais')
+      {echo 'active';}?> href="locais.php?pagina=locais" title="Ver mais...">
+      <h4><p style="color:white;"><strong>...</strong></h4></p></a>
+  </div>
+</div>
+
 <?php include("footer.php");

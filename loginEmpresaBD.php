@@ -25,6 +25,7 @@
         $_SESSION['idEmpresa'] = $registro['idEmpresa'];
         $_SESSION['emailEmpresa'] = $registro['emailEmpresa'];
         $_SESSION['nomeEmpresa'] = $registro['nomeEmpresa'];
+        $_SESSION['tipoUsuario'] = 'empresa'; // ou 'empresa', conforme o caso
 
         // Redirecionar para a página de início
         header('location:inicio.php?pagina=inicio');

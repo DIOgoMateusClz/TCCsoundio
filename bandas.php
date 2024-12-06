@@ -1,68 +1,146 @@
 <?php include("validarSessao.php"); ?>
-<?php include("header.php")?>
+<?php include("header.php"); ?>
 <title>Bandas</title>
-<style>
 
-</style>
-
-<div>
-           
-
-                </div>
-
-<!--  <h1><strong>_______________________________________________________________________</strong></h1> -->
-<div class="jumbotron text-left">
+<div class="container mt-5">
+    <div class="jumbotron text-left">
     <h2><strong>BANDAS</strong></h2>
-    <form class="d-flex" action="#codigoBuscar.php">   
-        <input class="form-control me-2" type="text" placeholder="Buscar..">
-     <button type="submit" class="btn btn-outline-light">Buscar</button><img src="icones/iconFilter.png"width="35" height="35">
-            </form>
+
+ <form class="d-flex flex-column" method="GET" action="">
+    <input class="form-control me-2" type="text" name="search" placeholder="Buscar bandas cadastradas...">
+    <div class="mt-3">
+        <label><input type="checkbox" name="generos[]" value="rock"> Rock &nbsp;&nbsp;</label>
+        <label><input type="checkbox" name="generos[]" value="heavyMetal"> Heavy Metal &nbsp;&nbsp;</label>
+        <label><input type="checkbox" name="generos[]" value="punk"> Punk &nbsp;&nbsp;</label>
+        <label><input type="checkbox" name="generos[]" value="hardcore"> Hardcore &nbsp;&nbsp;</label>
+        <label><input type="checkbox" name="generos[]" value="sertanejo"> Sertanejo &nbsp;&nbsp;</label>
+        <label><input type="checkbox" name="generos[]" value="pagode"> Pagode &nbsp;&nbsp;</label>
+        <label><input type="checkbox" name="generos[]" value="samba"> Samba &nbsp;&nbsp;</label>
+        <label><input type="checkbox" name="generos[]" value="gospel"> Gospel &nbsp;&nbsp;</label>
+        <label><input type="checkbox" name="generos[]" value="rap"> Rap &nbsp;&nbsp;</label>
+        <label><input type="checkbox" name="generos[]" value="funk"> Funk &nbsp;&nbsp;</label>
+        <label><input type="checkbox" name="generos[]" value="MPB"> MPB &nbsp;&nbsp;</label>
+    </div>
+    <div class="mt-3">
+        <label for="estado">Estado:</label>
+        <select class="form-control" name="estado" id="estado">
+            <option value="">Selecione o Estado</option>
+            <?php
+               
+                include("conexaoBD.php");
+                $sqlEstados = "SELECT siglaEstado, nomeEstado FROM estados ORDER BY nomeEstado";
+                $resultEstados = $link->query($sqlEstados);
+                while ($estado = $resultEstados->fetch_assoc()) {
+                echo '<option value="' . $estado['siglaEstado'] . '" ' . (isset($_GET['estado']) && $_GET['estado']
+                == $estado['siglaEstado'] ? 'selected' : '') . '>' . $estado['nomeEstado'] . '</option>';
+                }
+                $link->close();
+            ?>
+        </select>
+    </div>
+    <div class="mt-3">
+        <button type="submit" class="btn btn-outline-dark">Buscar</button>
+        <button class="btn btn-outline-dark" onclick="window.location.href='bandas.php';" type="button">Ver tudo</button>
+    </div>
+</form>
+
+
 <br><br>
+<?php
+
+include("conexaoBD.php");
+
+// Verificando se o formulário de busca foi submetido
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+$generos = isset($_GET['generos']) ? $_GET['generos'] : [];
+$estado = isset($_GET['estado']) ? $_GET['estado'] : '';
+
+// Consulta SQL básica
+$sql = "SELECT idBanda, nomeBanda, fotoBanda, rock, heavyMetal, punk, hardcore, sertanejo, pagode, samba, gospel, rap, funk, MPB, estadoBanda 
+        FROM bandas 
+        WHERE nomeBanda LIKE ?";
+
+// Inicializando os parâmetros para o bind
+$params = ['%' . $search . '%'];
+$paramTypes = 's';
+
+// Se algum gênero for selecionado, adicionamos ao SQL
+if (!empty($generos)) {
+    $generoConditions = [];
+    foreach ($generos as $genero) {
+        $generoConditions[] = "$genero = 1";  // Verifica se o gênero está marcado
+    }
+
+    // Adiciona a condição para os gêneros selecionados
+    $sql .= " AND (" . implode(" OR ", $generoConditions) . ")";
+}
+if ($estado) {
+  $sql .= " AND estadoBanda = ?";
+  $params[] = $estado;
+  $paramTypes .= 's';
+}
+// Ordenação
+$sql .= " ORDER BY nomeBanda ASC";
+
+// Preparando a consulta
+$stmt = $link->prepare($sql);
+
+// Ajuste para usar os parâmetros dinamicamente
+if (!empty($generos)) {
+    // Para os gêneros, precisamos adicionar mais tipos e parâmetros ao bind
+    $stmt->bind_param($paramTypes, ...$params);
+} else {
+    // Se não há gêneros, apenas o parâmetro do nome
+    $stmt->bind_param($paramTypes, ...$params);
+}
+
+$stmt->execute();
+$result = $stmt->get_result();
+
+// Exibindo o resultado
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        // Gêneros da banda
+        $generos = [];
+        if ($row['rock']) $generos[] = "Rock";
+        if ($row['heavyMetal']) $generos[] = "Heavy Metal";
+        if ($row['punk']) $generos[] = "Punk";
+        if ($row['hardcore']) $generos[] = "Hardcore";
+        if ($row['sertanejo']) $generos[] = "Sertanejo";
+        if ($row['pagode']) $generos[] = "Pagode";
+        if ($row['samba']) $generos[] = "Samba";
+        if ($row['gospel']) $generos[] = "Gospel";
+        if ($row['rap']) $generos[] = "Rap";
+        if ($row['funk']) $generos[] = "Funk";
+        if ($row['MPB']) $generos[] = "MPB";
+
+        $generosTexto = implode(", ", $generos);
+
+        // Exibindo a banda
+        echo '
+        <div class="d-flex align-items-start mb-4">
+            <div class="me-3">
+                <img src="' . $row["fotoBanda"] . '" class="rounded-circle" alt="' . $row["nomeBanda"] . '" width="140" height="140">
+            </div>
+            <div>
+                <h2 class="h4"><strong>' . $row["nomeBanda"] . '</strong></h2>
+                <p class="mb-1"><strong>Gênero:</strong> ' . $generosTexto . '</p>
+                <p class="mb-1"><strong>Estado:</strong> ' . $row["estadoBanda"] . '</p>
+                <a href="perfisBandas.php?idBanda=' . $row["idBanda"] . '">Ver Perfil</a>
+            </div>
+        </div>
+        ';
+    }
+} else {
+    echo "<p>Nenhuma banda encontrada.</p>";
+}
 
 
-    <!-- Left-aligned -->
-<div class="media">
-  <div class="media-left">
-    <img src="img/logokartus.png" class="rounded-circle" alt="Cinque Terre" width="140" height="140">
-    </div>
-  <div class="media-body">
-    <h4 class="media-heading"><strong>&nbsp;KARTUS</strong></h4>
-    <p>&nbsp;&nbsp;Rock/Metal</p>
-    <div class="text-right"></div>
-    </div>
+// Fechando a conexão corretamente
+$stmt->close();
+$link->close();
+?>
+   </div>
 </div>
-<br>
-<div class="media">
-  <div class="media-left">
-    <img src="img/logoVolters.png" class="rounded-circle" alt="Cinque Terre" width="140" height="140">
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading"><strong>&nbsp;The Volters</strong></h4>
-    <p>&nbsp;&nbsp;Punk/Hardcore</p>
-    <div class="text-right"></div>
-  </div>
 </div>
-<br>
-<div class="media">
-  <div class="media-left">
-    <img src="img/logoEufoniks.png" class="rounded-circle" alt="Cinque Terre" width="140" height="140">
-    </div>
-  <div class="media-body">
-    <h4 class="media-heading"><strong>&nbsp;Eufoniks</strong></h4>
-    <p>&nbsp;&nbsp;Pop Rock/Classic Rock</p>
-    <div class="text-right"></div>
-    </div>
-</div>
-<br>
-<div class="media">
-  <div class="media-left">
-    <img src="img/logoGroselha.png" class="rounded-circle" alt="Cinque Terre" width="140" height="140">
-    </div>
-  <div class="media-body">
-    <h4 class="media-heading"><strong>&nbsp;Groselha Cry</strong></h4>
-    <p>&nbsp;&nbsp;Pop Rock/Pop Punk</p>
-    <div class="text-right"></div>
-    </div>
-</div>
-</body>
-<?php include("footer.php");
+<?php include("footer.php"); ?>

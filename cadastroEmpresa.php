@@ -8,6 +8,7 @@
 
     $tudoCerto = true;
 
+    
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Validação do campo nome
         if (empty($_POST["nomeEmpresa"])) {
@@ -15,10 +16,7 @@
             $tudoCerto = false;
         } else {
             $nomeEmpresa = testar_entrada($_POST["nomeEmpresa"]);
-            if (!preg_match("/^[a-zA-ZãÃáÁàÀêÊéÉèÈíÍìÌôÔõÕóÓòÒúÚùÙûÛçÇºª\' \']*$/", $nomeEmpresa)) {
-                echo "<div class='alert alert-warning text-center'>Atenção! No campo <strong>NOME</strong> somente letras são permitidas!</div>";
-                $tudoCerto = false;
-            }
+          
         }
 
         // Validação do campo CNPJ
@@ -141,42 +139,57 @@
             }
         }
 
-        // Upload da foto
         $diretorio = "img/";
-        $fotoEmpresa = $diretorio . basename($_FILES["fotoEmpresa"]["name"]);
+        $fotoEmpresaOriginal = basename($_FILES["fotoEmpresa"]["name"]);
+        $tipoDaImagem = strtolower(pathinfo($fotoEmpresaOriginal, PATHINFO_EXTENSION));
+        
+        // Renomeia a imagem com um identificador único
+        $fotoEmpresa = $diretorio . uniqid() . '.' . $tipoDaImagem;
+        
         $uploadOK = true;
-        $tipoDaImagem = strtolower(pathinfo($fotoEmpresa, PATHINFO_EXTENSION));
-
+        
         if ($_FILES["fotoEmpresa"]["size"] > 5000000) {
             echo "<div class='alert alert-warning'>Atenção! A foto ultrapassa o <strong>TAMANHO MÁXIMO</strong> permitido (5MB)!</div>";
             $uploadOK = false;
         }
-
+        
         if ($tipoDaImagem != "jpg" && $tipoDaImagem != "jpeg" && $tipoDaImagem != "png") {
             echo "<div class='alert alert-warning'>Atenção! A foto precisa estar nos formatos <strong>JPG, JPEG ou PNG</strong>!</div>";
             $uploadOK = false;
         }
-
+        
         if ($uploadOK) {
             if (!move_uploaded_file($_FILES["fotoEmpresa"]["tmp_name"], $fotoEmpresa)) {
                 echo "<div class='alert alert-warning'>Erro ao tentar mover <strong>A FOTO</strong> para o diretório $diretorio!</div>";
                 $uploadOK = false;
             }
-        }
 
+            
+        include("conexaoBD.php");
         // Se estiver tudo certo
         if ($tudoCerto && $uploadOK) {
-            include("conexaoBD.php");
+     
+           
+             $inserirEmpresa = "INSERT INTO empresas (fotoEmpresa, nomeEmpresa, cnpjEmpresa, cepEmpresa, cidadeEmpresa,
+             estadoEmpresa, telefoneEmpresa, descricaoEmpresa, bar, lanchonete, restaurante, casadeShows, pizzaria, centrodeEventos,
+            emailEmpresa, senhaEmpresa) 
+                               VALUES ('$fotoEmpresa', '$nomeEmpresa', '$cnpjEmpresa', '$cepEmpresa', '$cidadeEmpresa',
+                                '$estadoEmpresa', '$telefoneEmpresa', '$descricaoEmpresa',  '$bar', '$lanchonete', '$restaurante',
+                                 '$casadeShows', '$pizzaria', '$centrodeEventos', '$emailEmpresa', '$senhaEmpresa')";
 
-             $inserirEmpresa = "INSERT INTO empresas (fotoEmpresa, nomeEmpresa, cnpjEmpresa, cepEmpresa, cidadeEmpresa, estadoEmpresa, telefoneEmpresa, descricaoEmpresa, emailEmpresa, senhaEmpresa) 
-                               VALUES ('$fotoEmpresa', '$nomeEmpresa', '$cnpjEmpresa', '$cepEmpresa', '$cidadeEmpresa', '$estadoEmpresa', '$telefoneEmpresa', '$descricaoEmpresa', '$emailEmpresa', '$senhaEmpresa')";
+                if (mysqli_query($link, $inserirEmpresa)) {
+                    echo "<div class='alert alert-success text-center'><strong>Empresa</strong> cadastrada com sucesso!</div>";
+                    echo "<div class='jumbotron text-center'>
+                    <div style='margin-top:1px; margin-bottom:30px;'>
+                        <a href='loginEmpresa.php' class='btn btn-outline-dark btn-lg' title='Login Empresa'>
+                            Ir para o Login!
+                        </a>
+                    </div>
+                  </div>";
 
-            if (mysqli_query($link, $inserirEmpresa)) {
-                echo "<div class='alert alert-success text-center'><strong>Empresa</strong> cadastrada com sucesso!</div>";
-
-                echo "<div class='container mt-3'>
+                        echo "<div class='container mt-3'>
                         <div class='container mt-3 text-center'>
-                            <img src='$fotoEmpresa' width='150'>
+                        <img src='$fotoEmpresa' width='150'>
                         </div>
                         <table class='table'>
                             <tr>
@@ -208,6 +221,29 @@
                                 <td>$descricaoEmpresa</td>
                             </tr>
                             <tr>
+                            <th>GÊNERO</th>
+                            <td>";
+                                if($bar){
+                                    echo "<p>Bar</p>";
+                                }
+                                if($lanchonete){
+                                    echo "<p>Lanchonete</p>";
+                                }
+                                if($restaurante){
+                                    echo "<p>Restaurante</p>";
+                                }
+                                if($casadeShows){
+                                    echo "<p>Casa de Shows</p>";
+                                }
+                                if($pizzaria){
+                                    echo "<p>Pizzaria</p>";
+                                }
+                                if($centrodeEventos){
+                                    echo "<p>Centro de Eventos</p>";
+                                }
+                        echo"</td>
+                        </tr>
+                            <tr>
                                 <th>EMAIL</th>
                                 <td>$emailEmpresa</td>
                             </tr>
@@ -221,9 +257,12 @@
                             </tr>
                         </table>
                     </div>
+                    
                 ";
-            }
 
+               
+            }
+        }
             } else {
                 echo "<div class='alert alert-danger'>Erro ao tentar cadastrar <strong>Empresa</strong>!</div>" . mysqli_error($link);
             }

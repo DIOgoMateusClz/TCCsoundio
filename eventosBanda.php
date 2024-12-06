@@ -3,16 +3,9 @@
 <?php include("conexaoBD.php"); ?>
 <title>Eventos</title>
 
-<div class="container mt-5">
-    <div class="jumbotron text-center">
-        <div style="margin-top:1px; margin-bottom:30px;">
-            <button type="submit" class="btn btn-outline-dark btn-lg">
-                <a href="criarEvento.php?pagina=criarEvento" title="Criar Eventos">Crie seu evento: Clique aqui!</a>
-            </button>
-        </div>
-    </div>
 
-    <div class="jumbotron text-left p-3">
+<div class="container mt-5">
+    <div class="jumbotron text-left">
         <h2 class="mb-4"><strong>Eventos</strong></h2>
         <form class="d-flex flex-column" method="GET" action="">
             <!-- Campo de pesquisa -->

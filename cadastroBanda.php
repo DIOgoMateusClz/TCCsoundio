@@ -15,9 +15,9 @@
             $tudoCerto = false;
         } else {
             $nomeBanda = testar_entrada($_POST["nomeBanda"]);
-            if (!preg_match("/^[a-zA-ZãÃáÁàÀêÊéÉèÈíÍìÌôÔõÕóÓòÒúÚùÙûÛçÇºª\' \']*$/", $nomeBanda)) {
-                echo "<div class='alert alert-warning text-center'>Atenção! No campo <strong>NOME</strong> somente letras são permitidas!</div>";
-                $tudoCerto = false;
+            //if (!preg_match("/^[a-zA-ZãÃáÁàÀêÊéÉèÈíÍìÌôÔõÕóÓòÒúÚùÙûÛçÇºª\' \']*$/", $nomeBanda)) {
+              //  echo "<div class='alert alert-warning text-center'>Atenção! No campo <strong>NOME</strong> somente letras são permitidas!</div>";
+              //  $tudoCerto = false;
             }
         }
 
@@ -165,43 +165,55 @@
             }
         }
 
-        // Upload da foto
-        $diretorio = "img/";
-        $fotoBanda = $diretorio . basename($_FILES["fotoBanda"]["name"]);
-        $uploadOK = true;
-        $tipoDaImagem = strtolower(pathinfo($fotoBanda, PATHINFO_EXTENSION));
+     // Upload da foto
+$diretorio = "img/";
+$fotoBandaOriginal = basename($_FILES["fotoBanda"]["name"]);
+$tipoDaImagem = strtolower(pathinfo($fotoBandaOriginal, PATHINFO_EXTENSION));
 
-        if ($_FILES["fotoBanda"]["size"] > 5000000) {
-            echo "<div class='alert alert-warning'>Atenção! A foto ultrapassa o <strong>TAMANHO MÁXIMO</strong> permitido (5MB)!</div>";
-            $uploadOK = false;
-        }
+// Renomeia a imagem com um identificador único
+$fotoBanda = $diretorio . uniqid() . '.' . $tipoDaImagem;
 
-        if ($tipoDaImagem != "jpg" && $tipoDaImagem != "jpeg" && $tipoDaImagem != "png") {
-            echo "<div class='alert alert-warning'>Atenção! A foto precisa estar nos formatos <strong>JPG, JPEG ou PNG</strong>!</div>";
-            $uploadOK = false;
-        }
+$uploadOK = true;
 
-        if ($uploadOK) {
-            if (!move_uploaded_file($_FILES["fotoBanda"]["tmp_name"], $fotoBanda)) {
-                echo "<div class='alert alert-warning'>Erro ao tentar mover <strong>A FOTO</strong> para o diretório $diretorio!</div>";
-                $uploadOK = false;
-            }
-        }
+if ($_FILES["fotoBanda"]["size"] > 5000000) {
+    echo "<div class='alert alert-warning'>Atenção! A foto ultrapassa o <strong>TAMANHO MÁXIMO</strong> permitido (5MB)!</div>";
+    $uploadOK = false;
+}
+
+if ($tipoDaImagem != "jpg" && $tipoDaImagem != "jpeg" && $tipoDaImagem != "png") {
+    echo "<div class='alert alert-warning'>Atenção! A foto precisa estar nos formatos <strong>JPG, JPEG ou PNG</strong>!</div>";
+    $uploadOK = false;
+}
+
+if ($uploadOK) {
+    if (!move_uploaded_file($_FILES["fotoBanda"]["tmp_name"], $fotoBanda)) {
+        echo "<div class='alert alert-warning'>Erro ao tentar mover <strong>A FOTO</strong> para o diretório $diretorio!</div>";
+        $uploadOK = false;
+    }
+
+
         include("conexaoBD.php");
         // Se estiver tudo certo
         if ($tudoCerto && $uploadOK) {
      
 
-            $inserirBanda = "INSERT INTO bandas (`fotoBanda`, `nomeBanda`, `descricaoBanda`,  `estadoBanda`, `cidadeBanda`,
-            `telefoneBanda`, `rock`, `heavyMetal`, `punk`, `hardcore`, `sertanejo`, `pagode`, `samba`, `gospel`,
-            `rap`, `funk`, `MPB`,`emailBanda`, `senhaBanda`) 
+            $inserirBanda = "INSERT INTO bandas (fotoBanda, nomeBanda, descricaoBanda,  estadoBanda, cidadeBanda,
+            telefoneBanda, rock, heavyMetal, punk, hardcore, sertanejo, pagode, samba, gospel,
+            rap, funk, MPB, emailBanda, senhaBanda) 
             VALUES ('$fotoBanda', '$nomeBanda', '$descricaoBanda', '$estadoBanda', '$cidadeBanda',
             '$telefoneBanda', '$rock', '$heavyMetal', '$punk', '$hardcore', '$sertanejo',
             '$pagode', '$samba', '$gospel', '$rap', '$funk', '$MPB', '$emailBanda', '$senhaBanda')";
-
+            
+            
             if (mysqli_query($link, $inserirBanda)) {
                 echo "<div class='alert alert-success text-center'><strong>Banda</strong> cadastrada com sucesso!</div>";
-
+                echo "<div class='jumbotron text-center'>
+                <div style='margin-top:1px; margin-bottom:30px;'>
+                    <a href='loginBanda.php' class='btn btn-outline-dark btn-lg' title='Login Banda'>
+                        Ir para o Login!
+                    </a>
+                </div>
+              </div>";
                 echo "<div class='container mt-3'>
                 <div class='container mt-3 text-center'>
                     <img src='$fotoBanda' width='150'>
@@ -265,6 +277,7 @@
                         }
                 echo"</td>
                 </tr>
+                
                     <tr>
                         <th>EMAIL</th>
                         <td>$emailBanda</td>
@@ -279,7 +292,9 @@
                     </tr>
                 </table>
             </div>
+            
         ";
+
     }
 
             } else {
