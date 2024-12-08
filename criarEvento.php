@@ -3,7 +3,6 @@ include("validarSessao.php");
 include("header.php"); 
 include("conexaoBD.php");
 
-
 // Certifique-se de que o ID da empresa está na sessão
 if (!isset($_SESSION['idEmpresa'])) {
     echo "Erro: Empresa não encontrada. Faça login novamente.";
@@ -21,8 +20,13 @@ if ($result === false) {
     echo "Erro ao buscar bandas.";
     exit;
 }
-?>
 
+// Prepara as bandas para enviar ao JavaScript
+$bandas = [];
+while ($row = $result->fetch_assoc()) {
+    $bandas[] = $row;
+}
+?>
 
 <div class="container mt-5 mb-5 p-5 bg-light rounded">
     <h2 class="text-center mb-4">Criação de Evento</h2>
@@ -52,8 +56,8 @@ if ($result === false) {
         </div>
 
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" name="localEvento" placeholder="Local do evento" required>
-            <label for="localEvento">*Local do evento:</label>
+            <input type="text" class="form-control" name="localEvento" placeholder="Local do evento">
+            <label for="localEvento">Local do evento:</label>
             <small class="text-muted">(Ex: Rua xxxxx, 000 - Bairro xxx).</small>
         </div>
 
@@ -79,14 +83,48 @@ if ($result === false) {
             document.getElementById("precoEvento").addEventListener("input", formatarMoeda);
         </script>
 
+        <script>
+            // Passando as bandas do PHP para o JavaScript
+            const bandas = <?php echo json_encode($bandas); ?>;
+
+            function filtrarBandas() {
+                const input = document.getElementById('searchBanda').value.toLowerCase();
+                const lista = document.getElementById('resultadosBandas');
+                lista.innerHTML = ''; // Limpar os resultados anteriores
+
+                // Filtrar as bandas localmente
+                const resultados = bandas.filter(banda => 
+                    banda.nomeBanda.toLowerCase().includes(input)
+                );
+
+                if (resultados.length > 0) {
+                    resultados.forEach(banda => {
+                        const li = document.createElement('li');
+                        li.classList.add('list-group-item', 'list-group-item-action');
+                        li.textContent = banda.nomeBanda;
+                        li.onclick = () => {
+                            document.getElementById('searchBanda').value = banda.nomeBanda;
+                            document.getElementById('idBandaSelecionada').value = banda.idBanda;
+                            lista.innerHTML = ''; // Limpar a lista após a seleção
+                        };
+                        lista.appendChild(li);
+                    });
+                } else {
+                    const li = document.createElement('li');
+                    li.classList.add('list-group-item', 'list-group-item-action', 'disabled');
+                    li.textContent = 'Nenhuma banda encontrada';
+                    lista.appendChild(li);
+                }
+            }
+        </script>
+
         <div class="mb-3">
-            <label for="idBanda" class="form-label">*Selecione a Banda:</label>
-            <select class="form-control" name="idBanda" required>
-                <option value="">Escolha uma banda</option>
-                <?php while ($linha = $result->fetch_assoc()) : ?>
-                    <option value="<?php echo $linha['idBanda']; ?>"><?php echo $linha['nomeBanda']; ?></option>
-                <?php endwhile; ?>
-            </select>
+            <label for="searchBanda" class="form-label">*Selecione a Banda:</label>
+            <input type="text" id="searchBanda" class="form-control" placeholder="Digite o nome da banda..." onkeyup="filtrarBandas()">
+            <ul id="resultadosBandas" class="list-group mt-2" style="max-height: 200px; overflow-y: auto;">
+                <!-- Resultados das bandas serão inseridos aqui -->
+            </ul>
+            <input type="hidden" name="idBanda" id="idBandaSelecionada" required>
         </div>
 
         <div class="text-center">
