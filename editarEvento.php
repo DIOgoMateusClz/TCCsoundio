@@ -5,9 +5,9 @@
 <?php
 $idEvento = $_SESSION['idEvento'];
 if (isset($_GET["idEvento"])) {
-    $idEvento = $_GET["idEvento"]; // A captura do id do evento da URL
+    $idEvento = $_GET["idEvento"]; 
 
-    // Buscar dados do evento
+    
     $buscarDadosEvento = "SELECT * FROM eventos WHERE idEvento = $idEvento";
     $res = mysqli_query($link, $buscarDadosEvento) or die("<div class='alert alert-danger'>Erro ao tentar buscar dados do <strong>Evento</strong></div>");
 
@@ -18,11 +18,11 @@ if (isset($_GET["idEvento"])) {
         $horaEvento         = $registro["horaEvento"];
         $localEvento        = $registro["localEvento"];
         $fotoEvento         = $registro["fotoEvento"];
-        $idBanda            = $registro["idBanda"]; // ID da banda do evento
+        $idBanda            = $registro["idBanda"]; 
     }
 }
 
-// Buscar todas as bandas para popular o dropdown
+
 $listarBandas = "SELECT * FROM bandas";
 $resBandas = mysqli_query($link, $listarBandas) or die("<div class='alert alert-danger'>Erro ao tentar carregar as <strong>Bandas</strong></div>");
 ?>
@@ -39,8 +39,8 @@ $resBandas = mysqli_query($link, $listarBandas) or die("<div class='alert alert-
             </div>
 
             <div class="form-group">
-                <img src="<?php echo $fotoEvento; ?>" width="100"> <!-- Exibe a FOTO ATUAL cadastrada -->
-                <input type="hidden" name="fotoAtual" value="<?php echo $fotoEvento; ?>"> <!-- Passa o local -->
+                <img src="<?php echo $fotoEvento; ?>" width="100"> 
+                <input type="hidden" name="fotoAtual" value="<?php echo $fotoEvento; ?>"> 
                 <input type="file" class="btn btn-link" name="fotoEvento">
             </div>
 
@@ -69,12 +69,12 @@ $resBandas = mysqli_query($link, $listarBandas) or die("<div class='alert alert-
                 <label for="localEvento" class="form-label">Local:</label>
             </div>
 
-            <!-- Campo para selecionar a banda -->
+            
             <div class="form-floating mb-3 mt-3">
                 <select class="form-select" name="idBanda">
                     <?php
                     while ($banda = mysqli_fetch_assoc($resBandas)) {
-                        $selected = ($banda['idBanda'] == $idBanda) ? 'selected' : ''; // Marca a banda atual como selecionada
+                        $selected = ($banda['idBanda'] == $idBanda) ? 'selected' : ''; 
                         echo "<option value='{$banda['idBanda']}' $selected>{$banda['nomeBanda']}</option>";
                     }
                     ?>

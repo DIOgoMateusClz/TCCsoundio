@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Verifica se o usuário está logado
 if (!isset($_SESSION["emailEmpresa"])) {
     header('Location: loginEmpresa.php?pagina=loginEmpresa&erroLogin=naoLogado');
     exit();

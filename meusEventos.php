@@ -1,15 +1,15 @@
 <?php
 include("header.php");
-include("validarSessao.php"); // Verifica se o usuário está logado
-include("conexaoBD.php"); // Conexão com o banco de dados
+include("validarSessao.php"); 
+include("conexaoBD.php"); 
 
-// Verifica se a banda está logada
+
 if (!isset($_SESSION['idBanda'])) {
     echo "Erro: Banda não encontrada. Faça login novamente.";
     exit;
 }
 
-// Obtém o ID da banda logada da sessão
+
 $idBanda = $_SESSION['idBanda'];
 
 ?>
@@ -22,13 +22,13 @@ $idBanda = $_SESSION['idBanda'];
         <br>
 
         <?php
-        // Consulta SQL para obter eventos relacionados à banda logada
+      
         $sql = "SELECT e.idEvento, e.nomeEvento, e.dataEvento, e.fotoEvento 
                 FROM eventos e
-                WHERE e.idBanda = ?"; // Agora busca pelos eventos da banda logada
+                WHERE e.idBanda = ?"; 
         
         $stmt = $link->prepare($sql);
-        $stmt->bind_param("i", $idBanda); // Passa o idBanda para a consulta
+        $stmt->bind_param("i", $idBanda); 
         $stmt->execute();
         $result = $stmt->get_result();
 

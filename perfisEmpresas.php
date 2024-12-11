@@ -5,11 +5,11 @@
 <body>
 <div class="w3-content w3-margin-top" style="max-width:1700px;">
   <?php
-    // Obtendo o ID da empresa a partir da URL
+
     $id = isset($_GET['idEmpresa']) ? intval($_GET['idEmpresa']) : 0;
 
     if ($id > 0) {
-        // Consulta para obter informações da empresa com base no ID
+
         $sql = "SELECT idEmpresa, fotoEmpresa, nomeEmpresa, cnpjEmpresa, cepEmpresa, bar, lanchonete, restaurante, casadeShows,
          pizzaria, centrodeEventos, cidadeEmpresa, estadoEmpresa, descricaoEmpresa, telefoneEmpresa, galeriaEmpresa
                 FROM empresas WHERE idEmpresa = $id";
@@ -23,7 +23,7 @@
             $cnpjEmpresa = $row["cnpjEmpresa"];
             $cepEmpresa = $row["cepEmpresa"];
          
-            // Generos
+      
             $tipo = [];
             if ($row['bar']) $tipo[] = "Bar";
             if ($row['lanchonete']) $tipo[] = "Lanchonete";
@@ -46,9 +46,9 @@
     }
   ?>
 
-  <!-- Layout principal -->
+
   <div class="w3-row-padding">
-    <!-- Coluna da esquerda -->
+ 
     <div class="w3-third">
       <div class="w3-white w3-text-grey w3-card-4">
         <div class="w3-display-container">
@@ -63,19 +63,19 @@
           <p><img src="icones/iconLocation.png" width="20" height="20">&nbsp;<?= $cidadeEmpresa ?? 'Cidade desconhecida' ?> - <?= $estadoEmpresa ?? 'Estado desconhecido' ?></p>
           <p><img src="icones/iconCNPJ.png" width="20" height="20">&nbsp;&nbsp;
 <?php
-    // Agora estamos usando $row['cnpjEmpresa'] que contém os dados da empresa obtidos na consulta
+  
     $cnpj = $row['cnpjEmpresa'];
     
-    // Remove qualquer caractere que não seja número
+
     $cnpj = preg_replace('/\D/', '', $cnpj);
     
-    // Verifica se o CNPJ tem 14 dígitos
+  
     if (strlen($cnpj) == 14) {
-        // Formata o CNPJ para o formato: XX.XXX.XXX/XXXX-XX
+     
         $cnpjFormatado = substr($cnpj, 0, 2) . '.' . substr($cnpj, 2, 3) . '.' . substr($cnpj, 5, 3) . '/' . substr($cnpj, 8, 4) . '-' . substr($cnpj, 12, 2);
         echo htmlspecialchars($cnpjFormatado);
     } else {
-        // Caso o CNPJ não tenha 14 dígitos, exibe ele sem formatação
+        
         echo htmlspecialchars($cnpj);
     }
 ?>
@@ -86,13 +86,13 @@
       <br>
     </div>
 
-    <!-- Coluna da direita -->
+    
     <div class="w3-twothird">
       <div class="jumbotron text-left">
         <h2><strong>&nbsp;&nbsp;FOTOS</strong></h2>
         <div class="w3-row-padding">
             <?php
-            // Dividindo a galeria de fotos
+          
             $fotos = explode(',', $galeriaEmpresa);
             $numFotos = count($fotos);
             for ($i = 0; $i < 6; $i++) {
@@ -128,7 +128,7 @@
 
     <br>
 </div>
-      <!-- Descrição e Endereço -->
+      
       <div class="container">
         <h2><strong>DESCRIÇÃO</strong></h2>
         <blockquote>

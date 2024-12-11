@@ -10,15 +10,15 @@ if (isset($_SESSION['idBanda'])) {
     exit;
 }
 
-// Carregar os valores atuais da banda do banco de dados
+
 $query = "SELECT * FROM bandas WHERE idBanda = $idBanda";
 $result = mysqli_query($link, $query);
 $currentValues = mysqli_fetch_assoc($result);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $fieldsToUpdate = []; // Array para campos e valores preenchidos
+    $fieldsToUpdate = []; 
 
-    // Validação e inclusão de campos
+  
     if (!empty($_POST["nomeBanda"])) {
         $nomeBanda = testar_entrada($_POST["nomeBanda"]);
         $fieldsToUpdate[] = "nomeBanda = '$nomeBanda'";
@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fieldsToUpdate[] = "telefoneBanda = '$telefoneBanda'";
     }
 
-    // Processamento da foto principal
+
     if (!empty($_FILES["fotoBanda"]["name"])) {
         $fotoBanda = 'uploads2/' . basename($_FILES["fotoBanda"]["name"]);
         if (move_uploaded_file($_FILES["fotoBanda"]["tmp_name"], $fotoBanda)) {
@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "<div class='alert alert-danger'>Erro ao fazer upload da foto principal.</div>";
         }
     }
-    // Tipos de locais (checkboxes)
+
     $fieldsToUpdate[] = "rock = " . (isset($_POST["rock"]) ? 1 : (isset($currentValues['rock']) ? $currentValues['rock'] : 0));
     $fieldsToUpdate[] = "heavyMetal = " . (isset($_POST["heavyMetal"]) ? 1 : (isset($currentValues['heavyMetal']) ? $currentValues['heavyMetal'] : 0));
     $fieldsToUpdate[] = "punk = " . (isset($_POST["punk"]) ? 1 : (isset($currentValues['punk']) ? $currentValues['punk'] : 0));
@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!empty($_POST["senhaBanda"]) && !empty($_POST["confirmarSenhaBanda"])) {
         if ($_POST["senhaBanda"] === $_POST["confirmarSenhaBanda"]) {
-            // Usando md5 para criptografar a senha
+ 
             $senhaBanda = md5(testar_entrada($_POST["senhaBanda"]));
             $fieldsToUpdate[] = "senhaBanda = '$senhaBanda'";
         } else {
@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
-// Executar a atualização no banco
+
 if (!empty($fieldsToUpdate)) {
     $query = "UPDATE bandas SET " . implode(", ", $fieldsToUpdate) . " WHERE idBanda = $idBanda";
     
@@ -99,7 +99,7 @@ if (!empty($fieldsToUpdate)) {
     }
 }
 
-// Função para testar entrada
+
 function testar_entrada($dado) {
     $dado = trim($dado);
     $dado = stripslashes($dado);

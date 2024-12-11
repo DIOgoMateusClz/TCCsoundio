@@ -33,11 +33,7 @@ if (isset($_SESSION['tipoUsuario'])) {
 <div class="navbar navbar-expand-sm text-white text-center fixed-bottom bg-dark navbar-dark " style="height:8%; width:20% margin-top:60px;">
 <div class="container-fluid">
 <div class="container">   
-       <!-- <a href="meusEventos.php?pagina=meusEventos" title="Ver meus Eventos">
-        <button type="submit" class="btn btn-outline-light">
-          <span class="fa fa-glass"></span><b> Meus Eventos</b>
-        </button> </a>-->
-        <!-- Botão Meu Perfil com redirecionamento -->
+  
 <a href="<?php echo ($tipoUsuario === 'banda') ? 'meuPerfilBanda.php' : 'meuPerfil.php'; ?>" title="Ver meu perfil">
     <button type="submit" class="btn btn-outline-light">
         <span class="fa fa-user"></span><b> Meu Perfil</b>

@@ -3,17 +3,16 @@ include("validarSessao.php");
 include("header.php"); 
 include("conexaoBD.php"); 
 
-// Verifica se o ID da empresa logada está disponível na sessão
+
 if (isset($_SESSION['idBanda'])) {
     $idBanda = $_SESSION['idBanda'];
 
-    // Verifica se a conexão com o banco de dados foi estabelecida
+   
     if (!$link) {
         echo "Erro: Falha ao conectar com o banco de dados.";
         exit;
     }
 
-    // Consulta ao banco de dados para buscar dados da empresa logada
     $sql = "SELECT nomeBanda, emailBanda, telefoneBanda FROM bandas WHERE idBanda = ?";
     $stmt = mysqli_prepare($link, $sql);
     if ($stmt) {
@@ -27,7 +26,7 @@ if (isset($_SESSION['idBanda'])) {
             $email = $banda['emailBanda'];
             $telefone = $banda['telefoneBanda'];
         } else {
-            // Valores padrão se a consulta não retornar resultados
+         
             $nome = "Sem Nome";
             $email = "sem_email@exemplo.com";
             $telefone = "(00) 0000-0000";
@@ -37,7 +36,7 @@ if (isset($_SESSION['idBanda'])) {
         exit;
     }
 } else {
-    // Caso não haja ID na sessão, redireciona para a página de login ou exibe uma mensagem de erro
+  
     header("Location: login.php");
     exit();
 }
@@ -52,7 +51,7 @@ if (isset($_SESSION['idBanda'])) {
         </h1>
     <br><br>
     
-    <!-- Exibe o nome, email e telefone da empresa logada puxados do banco -->
+  
     <h2><strong>CONTATOS</strong></h2>
     <br><br>
 
@@ -73,7 +72,7 @@ if (isset($_SESSION['idBanda'])) {
             </p>
         </h3>
         <br>
-         <!-- Botão para voltar ao perfil -->
+   
          <div class="container">
             <div style="margin-top:30px; margin-bottom:30px;">
                 <a href="meuPerfilBanda.php" class="btn btn-outline-warning btn-lg">Voltar para meu perfil</a>

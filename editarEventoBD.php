@@ -10,7 +10,7 @@ if (isset($_SESSION['idEmpresa'])) {
     exit;
 }
 
-// Carregar os valores atuais do evento do banco de dados
+
 if (isset($_GET['idEvento'])) {
     $idEvento = $_GET['idEvento'];
     $query = "SELECT * FROM eventos WHERE idEvento = $idEvento AND idEmpresa = $idEmpresa";
@@ -22,9 +22,9 @@ if (isset($_GET['idEvento'])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $fieldsToUpdate = []; // Array para campos e valores preenchidos
+    $fieldsToUpdate = []; 
 
-    // Validação e inclusão de campos
+   
     if (!empty($_POST["nomeEvento"])) {
         $nomeEvento = testar_entrada($_POST["nomeEvento"]);
         $fieldsToUpdate[] = "nomeEvento = '$nomeEvento'";
@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fieldsToUpdate[] = "horaEvento = '$horaEvento'";
     }
 
-    // Processamento da foto do evento
+  
     if (!empty($_FILES["fotoEvento"]["name"])) {
         $fotoEvento = 'uploads2/' . basename($_FILES["fotoEvento"]["name"]);
         if (move_uploaded_file($_FILES["fotoEvento"]["tmp_name"], $fotoEvento)) {
@@ -60,19 +60,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // Atualização do preço do evento
+  
     if (!empty($_POST["precoEvento"])) {
         $precoEvento = testar_entrada($_POST["precoEvento"]);
         $fieldsToUpdate[] = "precoEvento = '$precoEvento'";
     }
 
-    // Se o evento for gratuito, definir o preço como 0
+   
     if (empty($_POST["precoEvento"])) {
         $fieldsToUpdate[] = "precoEvento = '0.00'";
     }
 }
 
-// Executar a atualização no banco
+
 if (!empty($fieldsToUpdate)) {
     $query = "UPDATE eventos SET " . implode(", ", $fieldsToUpdate) . " WHERE idEvento = $idEvento AND idEmpresa = $idEmpresa";
     

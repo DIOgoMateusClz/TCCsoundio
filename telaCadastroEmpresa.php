@@ -5,7 +5,7 @@
 
 
 <body>
-    <!-- Seu conteúdo HTML -->
+
     <script src="cidades.js"></script>
 </body>
 <div class="jumbotron text-center">

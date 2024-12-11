@@ -1,7 +1,7 @@
 <?php include("header.php"); ?>
 
 <?php
-    // Inicializa as variáveis com valores vazios
+
     $fotoEmpresa = $nomeEmpresa = $cnpjEmpresa = $cepEmpresa = $cidadeEmpresa = $estadoEmpresa = 
     $telefoneEmpresa = $descricaoEmpresa = $bar = $lanchonete = $restaurante = $casadeShows = $pizzaria = $centrodeEventos
     = $emailEmpresa = $senhaEmpresa = $confirmarSenhaEmpresa = "";
@@ -10,7 +10,7 @@
 
     
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Validação do campo nome
+
         if (empty($_POST["nomeEmpresa"])) {
             echo "<div class='alert alert-warning'>O campo <strong>NOME</strong> é obrigatório!</div>";
             $tudoCerto = false;
@@ -19,7 +19,7 @@
           
         }
 
-        // Validação do campo CNPJ
+
         if (empty($_POST["cnpjEmpresa"])) {
             echo "<div class='alert alert-warning'>O campo <strong>CNPJ</strong> é obrigatório!</div>";
             $tudoCerto = false;
@@ -27,7 +27,7 @@
             $cnpjEmpresa = testar_entrada($_POST["cnpjEmpresa"]);
         }
 
-        // Validação do campo CEP
+
         if (empty($_POST["cepEmpresa"])) {
             echo "<div class='alert alert-warning'>O campo <strong>CEP</strong> é obrigatório!</div>";
             $tudoCerto = false;
@@ -35,7 +35,7 @@
             $cepEmpresa = testar_entrada($_POST["cepEmpresa"]);
         }
 
-        // Validação do campo Cidade
+
         if (empty($_POST["cidadeEmpresa"])) {
             echo "<div class='alert alert-warning'>O campo <strong>CIDADE</strong> é obrigatório!</div>";
             $tudoCerto = false;
@@ -43,7 +43,7 @@
             $cidadeEmpresa = testar_entrada($_POST["cidadeEmpresa"]);
         }
 
-        // Validação do campo Estado
+
         if (empty($_POST["estadoEmpresa"])) {
             echo "<div class='alert alert-warning'>O campo <strong>ESTADO</strong> é obrigatório!</div>";
             $tudoCerto = false;
@@ -51,7 +51,7 @@
             $estadoEmpresa = testar_entrada($_POST["estadoEmpresa"]);
         }
 
-        // Validação do campo Telefone
+
         if (empty($_POST["telefoneEmpresa"])) {
             echo "<div class='alert alert-warning'>O campo <strong>TELEFONE</strong> é obrigatório!</div>";
             $tudoCerto = false;
@@ -59,7 +59,7 @@
             $telefoneEmpresa = testar_entrada($_POST["telefoneEmpresa"]);
         }
 
-        // Validação do campo Descrição
+
         if (empty($_POST["descricaoEmpresa"])) {
             echo "<div class='alert alert-warning'>O campo <strong>DESCRIÇÃO</strong> é obrigatório!</div>";
             $tudoCerto = false;
@@ -67,51 +67,50 @@
             $descricaoEmpresa = testar_entrada($_POST["descricaoEmpresa"]);
         }
 
-        
-        // Validação do campo Genero
+
         if(isset($_POST["bar"])){
-            $bar = 1; //Se o campo estiver marcado, atribui o valor 1
+            $bar = 1;
         }
         else{
-            $bar = 0; //Se o campo NÃO estiver marcado, atribui o valor 0
+            $bar = 0; 
         }
 
         if(isset($_POST["lanchonete"])){
-            $lanchonete = 1; //Se o campo estiver marcado, atribui o valor 1
+            $lanchonete = 1; 
         }
         else{
-            $lanchonete = 0; //Se o campo NÃO estiver marcado, atribui o valor 0
+            $lanchonete = 0; 
         }
 
         if(isset($_POST["restaurante"])){
-            $restaurante = 1; //Se o campo estiver marcado, atribui o valor 1
+            $restaurante = 1; 
         }
         else{
-            $restaurante = 0; //Se o campo NÃO estiver marcado, atribui o valor 0
+            $restaurante = 0; 
         }
 
         if(isset($_POST["casadeShows"])){
-            $casadeShows = 1; //Se o campo estiver marcado, atribui o valor 1
+            $casadeShows = 1; 
         }
         else{
-            $casadeShows = 0; //Se o campo NÃO estiver marcado, atribui o valor 0
+            $casadeShows = 0; 
         }
 
         if(isset($_POST["pizzaria"])){
-            $pizzaria = 1; //Se o campo estiver marcado, atribui o valor 1
+            $pizzaria = 1; 
         }
         else{
-            $pizzaria = 0; //Se o campo NÃO estiver marcado, atribui o valor 0
+            $pizzaria = 0; 
         }
 
         if(isset($_POST["centrodeEventos"])){
-            $centrodeEventos = 1; //Se o campo estiver marcado, atribui o valor 1
+            $centrodeEventos = 1;
         }
         else{
-            $centrodeEventos = 0; //Se o campo NÃO estiver marcado, atribui o valor 0
+            $centrodeEventos = 0; 
         }
 
-        // Validação do campo Email
+ 
         if (empty($_POST["emailEmpresa"])) {
             echo "<div class='alert alert-warning'>O campo <strong>EMAIL</strong> é obrigatório!</div>";
             $tudoCerto = false;
@@ -119,7 +118,7 @@
             $emailEmpresa = testar_entrada($_POST["emailEmpresa"]);
         }
 
-        // Validação da senha
+
         if (empty($_POST["senhaEmpresa"])) {
             echo "<div class='alert alert-warning'>O campo <strong>SENHA</strong> é obrigatório!</div>";
             $tudoCerto = false;
@@ -127,7 +126,7 @@
             $senhaEmpresa = md5(testar_entrada($_POST["senhaEmpresa"]));
         }
 
-        // Validação da confirmação de senha
+
         if (empty($_POST["confirmarSenhaEmpresa"])) {
             echo "<div class='alert alert-warning'>O campo <strong>CONFIRMAR SENHA</strong> é obrigatório!</div>";
             $tudoCerto = false;
@@ -143,7 +142,7 @@
         $fotoEmpresaOriginal = basename($_FILES["fotoEmpresa"]["name"]);
         $tipoDaImagem = strtolower(pathinfo($fotoEmpresaOriginal, PATHINFO_EXTENSION));
         
-        // Renomeia a imagem com um identificador único
+
         $fotoEmpresa = $diretorio . uniqid() . '.' . $tipoDaImagem;
         
         $uploadOK = true;
@@ -166,7 +165,7 @@
 
             
         include("conexaoBD.php");
-        // Se estiver tudo certo
+
         if ($tudoCerto && $uploadOK) {
      
            
@@ -269,7 +268,7 @@
         }
     
 
-    // Função para evitar SQL Injection
+
     function testar_entrada($dado) {
         $dado = trim($dado);
         $dado = stripslashes($dado);

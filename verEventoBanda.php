@@ -3,20 +3,20 @@ include("validarSessao.php");
 include("header.php"); 
 include("conexaoBD.php");
 
-// Verifica se o ID do evento foi passado na URL
+
 if (!isset($_GET['idEvento'])) {
     echo "Erro: Evento não encontrado.";
     exit;
 }
 
-// Obtém o ID do evento da URL
+
 $idEvento = $_GET['idEvento'];
 
-// Verifica se a banda logada é a mesma que está associada ao evento
+
 if (isset($_SESSION['idBanda'])) {
     $idBandaLogada = $_SESSION['idBanda'];
 
-    // Consulta para obter os detalhes do evento, incluindo a banda associada
+
     $sql = "SELECT e.nomeEvento, e.dataEvento, e.horaEvento, e.precoEvento, e.localEvento, e.descricaoEvento, e.fotoEvento, 
                    b.nomeBanda, emp.nomeEmpresa, emp.estadoEmpresa, emp.cidadeEmpresa, e.idBanda, e.idEvento
             FROM eventos e
@@ -34,25 +34,24 @@ if (isset($_SESSION['idBanda'])) {
         exit;
     }
 
-    // Obtém os detalhes do evento
+
     $evento = $result->fetch_assoc();
 
-    // Verifica se a banda logada é a mesma que está associada ao evento
+
     $isBandaAssociada = $evento['idBanda'] == $idBandaLogada;
 }
 
-// Se o botão de excluir for pressionado
 if (isset($_POST['excluirEvento'])) {
-    // Verifica se a banda logada é a mesma que está associada ao evento
+
     if ($isBandaAssociada) {
-        // Exclui o evento do banco de dados
+
         $sqlDelete = "DELETE FROM eventos WHERE idEvento = ?";
         $stmtDelete = $link->prepare($sqlDelete);
         $stmtDelete->bind_param("i", $idEvento);
         $stmtDelete->execute();
 
         if ($stmtDelete->affected_rows > 0) {
-            // Redireciona para a página meusEventos.php após a exclusão
+
             echo "<script>alert('Evento excluído com sucesso!'); window.location.href='meusEventos.php';</script>";
         } else {
             echo "<script>alert('Erro ao excluir o evento. Tente novamente.');</script>";

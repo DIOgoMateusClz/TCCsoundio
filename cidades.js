@@ -32,14 +32,12 @@ function carregarCidades() {
     const estado = document.getElementById("estadoEmpresa").value;
     const cidadeSelect = document.getElementById("cidadeEmpresa");
 
-    console.log("Estado selecionado:", estado);  // Depuração: Verifica qual estado foi selecionado
+    console.log("Estado selecionado:", estado); 
 
-    // Limpa as opções anteriores
     cidadeSelect.innerHTML = '<option value="" disabled selected>Selecione a cidade</option>';
 
-    // Verifica se o estado tem cidades registradas
     if (estado && cidadesPorEstado[estado]) {
-        console.log("Cidades encontradas para o estado:", cidadesPorEstado[estado]);  // Depuração: Verifica se as cidades estão carregando
+        console.log("Cidades encontradas para o estado:", cidadesPorEstado[estado]); 
         const cidades = cidadesPorEstado[estado];
         cidades.forEach(cidade => {
             const option = document.createElement("option");

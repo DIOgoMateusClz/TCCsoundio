@@ -10,14 +10,13 @@
 
 <?php
 
-// Consulta SQL para obter bandas aleatórias
 $sql = "SELECT idBanda, nomeBanda, fotoBanda, rock, heavyMetal, punk, hardcore, sertanejo, pagode, samba, gospel, rap, funk, MPB, estadoBanda FROM bandas ORDER BY RAND() LIMIT 5";
 $result = $link->query($sql);
 
 if ($result->num_rows > 0) {
-    // Loop para exibir cada banda
+ 
     while($row = $result->fetch_assoc()) {
-        // Definindo os gêneros da banda de acordo com as colunas booleanas
+     
         $generos = [];
         if ($row['rock']) $generos[] = "Rock";
         if ($row['heavyMetal']) $generos[] = "Heavy Metal";
@@ -31,7 +30,7 @@ if ($result->num_rows > 0) {
         if ($row['funk']) $generos[] = "Funk";
         if ($row['MPB']) $generos[] = "MPB";
         
-  // Convertendo a lista de gêneros para uma string separada por vírgulas
+
 $generosTexto = implode(", ", $generos);
 
 echo '
@@ -67,14 +66,14 @@ echo '
     <br><br>
 
     <?php
-    // Consulta SQL para obter empresas aleatórias
+
     $sql = "SELECT idEmpresa, nomeEmpresa, fotoEmpresa, bar, lanchonete, restaurante, casadeShows, pizzaria, centrodeEventos, estadoEmpresa FROM empresas ORDER BY RAND() LIMIT 5";
     $result = $link->query($sql);
 
     if ($result->num_rows > 0) {
-        // Loop para exibir cada Empresa
+
         while($row = $result->fetch_assoc()) {
-            // Definindo os tipos da empresa de acordo com as colunas booleanas
+  
             $tipo = [];
             if ($row['bar']) $tipo[] = "Bar";
             if ($row['lanchonete']) $tipo[] = "Lanchonete";
@@ -83,7 +82,7 @@ echo '
             if ($row['pizzaria']) $tipo[] = "Pizzaria";
             if ($row['centrodeEventos']) $tipo[] = "Centro de Eventos";
             
-         // Convertendo a lista de tipos para uma string separada por vírgulas
+       
 $tipoTexto = implode(", ", $tipo);
 
 echo '
@@ -105,7 +104,7 @@ echo '
         echo "<p>Nenhuma Empresa encontrada.</p>";
     }
 
-// Fechando a conexão corretamente
+
 $link->close();
 ?>
  </div> 

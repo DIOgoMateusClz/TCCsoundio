@@ -15,13 +15,13 @@ if ($indiceFoto === null || !isset($_FILES['fotoNova']) || $_FILES['fotoNova']['
     exit;
 }
 
-// Verifica o tamanho do arquivo (500 MB em bytes)
+
 if ($_FILES['fotoNova']['size'] > 500 * 1024 * 1024) {
     echo "Erro: O tamanho do arquivo excede o limite de 500 MB.";
     exit;
 }
 
-// Verifica o tipo de arquivo e a extensão
+
 $tiposPermitidos = ['image/jpeg', 'image/png', 'image/gif'];
 $extensoesPermitidas = ['jpg', 'jpeg', 'png', 'gif'];
 
@@ -33,7 +33,7 @@ if (!in_array($tipoArquivo, $tiposPermitidos) || !in_array($extensaoArquivo, $ex
     exit;
 }
 
-// Busca a galeria atual
+
 $sql = "SELECT galeriaBanda FROM bandas WHERE idBanda = ?";
 $stmt = $link->prepare($sql);
 $stmt->bind_param("i", $idBanda);
@@ -48,7 +48,7 @@ if ($result->num_rows > 0) {
     exit;
 }
 
-// Processa o upload da nova foto
+
 $diretorioUpload = 'uploads2/';
 if (!is_dir($diretorioUpload)) {
     mkdir($diretorioUpload, 0755, true);
@@ -59,7 +59,7 @@ $caminhoArquivo = $diretorioUpload . $nomeArquivo;
 
 if (move_uploaded_file($_FILES['fotoNova']['tmp_name'], $caminhoArquivo)) {
     $fotos[$indiceFoto] = $caminhoArquivo;
-    $novaGaleria = implode(',', array_slice($fotos, 0, 6)); // Limita a 6 fotos
+    $novaGaleria = implode(',', array_slice($fotos, 0, 6)); 
 
     $sqlUpdate = "UPDATE bandas SET galeriaBanda = ? WHERE idBanda = ?";
     $stmtUpdate = $link->prepare($sqlUpdate);
@@ -78,7 +78,7 @@ $stmt->close();
 $stmtUpdate->close();
 $link->close();
 
-// Redireciona para a página do perfil
+
 header("Location: meuPerfilBanda.php");
 exit;
 ?>

@@ -3,7 +3,6 @@ include("validarSessao.php");
 include("header.php");
 include("conexaoBD.php");
 
-// Verifica se o ID da empresa está na sessão
 if (!isset($_SESSION['idBanda'])) {
     echo "Erro: Banda não encontrada.";
     exit;
@@ -11,7 +10,7 @@ if (!isset($_SESSION['idBanda'])) {
 
 $idBanda= $_SESSION['idBanda'];
 
-// Consulta ao banco de dados para obter os dados da empresa logada
+
 $sql = "SELECT * FROM bandas WHERE idBanda = ?";
 $stmt = $link->prepare($sql);
 $stmt->bind_param("i", $idBanda);
@@ -27,13 +26,13 @@ if ($result->num_rows > 0) {
 ?>
 
 <body>
-<!-- Page Container -->
+
 <div class="w3-content w3-margin-top" style="max-width:1700px;">
 
-  <!-- The Grid -->
+ 
   <div class="w3-row-padding">
 
-    <!-- Left Column -->
+  
     <div class="w3-third">
       <div class="w3-white w3-text-grey w3-card-4">
         <div class="w3-display-container">
@@ -46,7 +45,7 @@ if ($result->num_rows > 0) {
         <div class="w3-container">
           <p><img src="icones/iconStar.png" width="20" height="20">&nbsp;
           <?php
-          // Tipos de banda
+         
           $tiposBanda = [];
           if ((int)$banda['rock'] === 1) $tiposBanda[] = "Rock";
           if ((int)$banda['heavyMetal'] === 1) $tiposBanda[] = "Heavy Metal";
@@ -72,7 +71,7 @@ if ($result->num_rows > 0) {
       <br>
     </div>
 
-    <!-- Right Column -->
+    
     <div class="w3-twothird">
       <div class="jumbotron text-left">
         <h2><strong>&nbsp;&nbsp;FOTOS</strong></h2>
@@ -128,12 +127,11 @@ if ($result->num_rows > 0) {
         </div>
         <br>
 
-        <!-- Formulário de exclusão com confirmação em JavaScript -->
         <div class="jumbotron text-center">
           <div class="container">
             <div class="row mb-3">
               <div class="col-12 col-md-10 col-lg-8 mx-auto">
-                <!-- O botão não envia o formulário diretamente, mas chama a função JavaScript -->
+      
                 <button type="button" class="btn btn-danger btn-lg w-100 text-dark" onclick="confirmarExclusao()">
                     <strong>Excluir Conta</strong>
                 </button>
@@ -143,11 +141,11 @@ if ($result->num_rows > 0) {
         </div>
 
         <script>
-       // Função para confirmar exclusão de conta
+ 
 function confirmarExclusao() {
     var resposta = confirm("Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.");
     if (resposta) {
-        // Envia a requisição AJAX para excluir a conta
+  
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "excluirConta.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -155,16 +153,16 @@ function confirmarExclusao() {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 var response = xhr.responseText;
                 if (response == 'success') {
-                    // Se a exclusão for bem-sucedida, redireciona para a página de logout ou outra página
-                    window.location.href = 'logout.php'; // ou qualquer página após a exclusão
+               
+                    window.location.href = 'logout.php'; 
                 } else {
                     alert("Erro ao excluir conta: " + response);
                 }
             }
         };
-        xhr.send("excluirConta=true"); // Envia o dado 'excluirConta' para o PHP
+        xhr.send("excluirConta=true"); 
     } else {
-        // Se o usuário clicar em "Não", nada acontece
+   
         return;
     }
 }

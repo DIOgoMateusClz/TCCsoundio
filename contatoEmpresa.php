@@ -3,17 +3,17 @@ include("validarSessao.php");
 include("header.php"); 
 include("conexaoBD.php"); 
 
-// Verifica se o ID da empresa foi passado na URL
-if (isset($_GET['idEmpresa']) && intval($_GET['idEmpresa']) > 0) {
-    $idEmpresa = intval($_GET['idEmpresa']); // Pega o ID da URL
 
-    // Verifica se a conexão com o banco de dados foi estabelecida
+if (isset($_GET['idEmpresa']) && intval($_GET['idEmpresa']) > 0) {
+    $idEmpresa = intval($_GET['idEmpresa']); 
+
+
     if (!$link) {
         echo "Erro: Falha ao conectar com o banco de dados.";
         exit;
     }
 
-    // Consulta ao banco de dados para buscar dados da empresa usando o ID
+
     $sql = "SELECT nomeEmpresa, emailEmpresa, telefoneEmpresa FROM empresas WHERE idEmpresa = ?";
     $stmt = mysqli_prepare($link, $sql);
     if ($stmt) {
@@ -27,7 +27,7 @@ if (isset($_GET['idEmpresa']) && intval($_GET['idEmpresa']) > 0) {
             $email = $empresa['emailEmpresa'];
             $telefone = $empresa['telefoneEmpresa'];
         } else {
-            // Caso não encontre a empresa, valores padrão
+
             $nome = "Sem Nome";
             $email = "sem_email@exemplo.com";
             $telefone = "(00) 0000-0000";
@@ -37,7 +37,7 @@ if (isset($_GET['idEmpresa']) && intval($_GET['idEmpresa']) > 0) {
         exit;
     }
 } else {
-    // Caso o ID não seja passado, redireciona para a página de login ou exibe uma mensagem de erro
+
     echo "Erro: ID da empresa não especificado.";
     exit();
 }
@@ -52,7 +52,7 @@ if (isset($_GET['idEmpresa']) && intval($_GET['idEmpresa']) > 0) {
     </h1>
     <br><br>
     
-    <!-- Exibe o nome, email e telefone da empresa acessada -->
+
     <h2><strong>CONTATOS</strong></h2>
     <br><br>
 
@@ -72,10 +72,10 @@ if (isset($_GET['idEmpresa']) && intval($_GET['idEmpresa']) > 0) {
         </h3>
         <br>
         
-        <!-- Botão para voltar ao perfil -->
+
         <div class="container">
     <div style="margin-top:30px; margin-bottom:30px;">
-        <!-- Botão que leva ao perfil da banda com o mesmo ID -->
+
         <a href="perfisEmpresas.php?idEmpresa=<?= $idEmpresa ?>" class="btn btn-outline-warning btn-lg">Voltar para perfil da empresa</a>
     </div>
 </div>

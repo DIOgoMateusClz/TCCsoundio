@@ -1,7 +1,6 @@
 <?php include("header.php"); ?>
 
 <?php
-    // Inicializa as variáveis com valores vazios
     $fotoBanda = $nomeBanda = $descricaoBanda = $cidadeBanda = $estadoBanda =
     $telefoneBanda = $rock = $heavyMetal = $punk = $hardcore = $sertanejo = $pagode = $samba = $gospel = $rap =
     $funk = $MPB = $emailBanda = $senhaBanda = $confirmarSenhaBanda = "";
@@ -9,7 +8,6 @@
     $tudoCerto = true;
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Validação do campo nome
         if (empty($_POST["nomeBanda"])) {
             echo "<div class='alert alert-warning'>O campo <strong>NOME</strong> é obrigatório!</div>";
             $tudoCerto = false;
@@ -21,7 +19,6 @@
             }
         }
 
-         // Validação do campo Descrição
          if (empty($_POST["descricaoBanda"])) {
             echo "<div class='alert alert-warning'>O campo <strong>DESCRIÇÃO</strong> é obrigatório!</div>";
             $tudoCerto = false;
@@ -29,7 +26,7 @@
             $descricaoBanda = testar_entrada($_POST["descricaoBanda"]);
         }
 
-                // Validação do campo Estado
+
         if (empty($_POST["estadoBanda"])) {
             echo "<div class='alert alert-warning'>O campo <strong>ESTADO</strong> é obrigatório!</div>";
             $tudoCerto = false;
@@ -37,7 +34,7 @@
             $estadoBanda = testar_entrada($_POST["estadoBanda"]);
         }
 
-        // Validação do campo Cidade
+
         if (empty($_POST["cidadeBanda"])) {
             echo "<div class='alert alert-warning'>O campo <strong>CIDADE</strong> é obrigatório!</div>";
             $tudoCerto = false;
@@ -47,7 +44,7 @@
 
 
 
-        // Validação do campo Telefone
+
         if (empty($_POST["telefoneBanda"])) {
             echo "<div class='alert alert-warning'>O campo <strong>TELEFONE</strong> é obrigatório!</div>";
             $tudoCerto = false;
@@ -56,88 +53,84 @@
         }
 
        
-
-        // Validação do campo Genero
         if(isset($_POST["rock"])){
-            $rock = 1; //Se o campo estiver marcado, atribui o valor 1
+            $rock = 1;
         }
         else{
-            $rock = 0; //Se o campo NÃO estiver marcado, atribui o valor 0
+            $rock = 0; 
         }
 
         if(isset($_POST["heavyMetal"])){
-            $heavyMetal = 1; //Se o campo estiver marcado, atribui o valor 1
+            $heavyMetal = 1;
         }
         else{
-            $heavyMetal = 0; //Se o campo NÃO estiver marcado, atribui o valor 0
+            $heavyMetal = 0; 
         }
 
         if(isset($_POST["punk"])){
-            $punk = 1; //Se o campo estiver marcado, atribui o valor 1
+            $punk = 1; 
         }
         else{
-            $punk = 0; //Se o campo NÃO estiver marcado, atribui o valor 0
+            $punk = 0; 
         }
 
         if(isset($_POST["hardcore"])){
-            $hardcore = 1; //Se o campo estiver marcado, atribui o valor 1
+            $hardcore = 1; 
         }
         else{
-            $hardcore = 0; //Se o campo NÃO estiver marcado, atribui o valor 0
+            $hardcore = 0; 
         }
 
         if(isset($_POST["sertanejo"])){
-            $sertanejo = 1; //Se o campo estiver marcado, atribui o valor 1
+            $sertanejo = 1; 
         }
         else{
-            $sertanejo = 0; //Se o campo NÃO estiver marcado, atribui o valor 0
+            $sertanejo = 0; 
         }
 
         if(isset($_POST["pagode"])){
-            $pagode = 1; //Se o campo estiver marcado, atribui o valor 1
+            $pagode = 1;
         }
         else{
-            $pagode = 0; //Se o campo NÃO estiver marcado, atribui o valor 0
+            $pagode = 0; 
         }
 
         if(isset($_POST["samba"])){
-            $samba = 1; //Se o campo estiver marcado, atribui o valor 1
+            $samba = 1; 
         }
         else{
-            $samba = 0; //Se o campo NÃO estiver marcado, atribui o valor 0
+            $samba = 0; 
         }
 
         if(isset($_POST["gospel"])){
-            $gospel = 1; //Se o campo estiver marcado, atribui o valor 1
+            $gospel = 1; 
         }
         else{
-            $gospel = 0; //Se o campo NÃO estiver marcado, atribui o valor 0
+            $gospel = 0; 
         }
 
         if(isset($_POST["rap"])){
-            $rap = 1; //Se o campo estiver marcado, atribui o valor 1
+            $rap = 1; 
         }
         else{
-            $rap = 0; //Se o campo NÃO estiver marcado, atribui o valor 0
+            $rap = 0; 
         }
 
         if(isset($_POST["funk"])){
-            $funk = 1; //Se o campo estiver marcado, atribui o valor 1
+            $funk = 1; 
         }
         else{
-            $funk = 0; //Se o campo NÃO estiver marcado, atribui o valor 0
+            $funk = 0;
         }
 
         if(isset($_POST["MPB"])){
-            $MPB = 1; //Se o campo estiver marcado, atribui o valor 1
+            $MPB = 1; 
         }
         else{
-            $MPB = 0; //Se o campo NÃO estiver marcado, atribui o valor 0
+            $MPB = 0; 
         }
 
 
-
-        // Validação do campo Email
         if (empty($_POST["emailBanda"])) {
             echo "<div class='alert alert-warning'>O campo <strong>EMAIL</strong> é obrigatório!</div>";
             $tudoCerto = false;
@@ -145,7 +138,6 @@
             $emailBanda = testar_entrada($_POST["emailBanda"]);
         }
 
-        // Validação da senha
         if (empty($_POST["senhaBanda"])) {
             echo "<div class='alert alert-warning'>O campo <strong>SENHA</strong> é obrigatório!</div>";
             $tudoCerto = false;
@@ -153,7 +145,7 @@
             $senhaBanda = md5(testar_entrada($_POST["senhaBanda"]));
         }
 
-        // Validação da confirmação de senha
+
         if (empty($_POST["confirmarSenhaBanda"])) {
             echo "<div class='alert alert-warning'>O campo <strong>CONFIRMAR SENHA</strong> é obrigatório!</div>";
             $tudoCerto = false;
@@ -165,12 +157,12 @@
             }
         }
 
-     // Upload da foto
+
 $diretorio = "img/";
 $fotoBandaOriginal = basename($_FILES["fotoBanda"]["name"]);
 $tipoDaImagem = strtolower(pathinfo($fotoBandaOriginal, PATHINFO_EXTENSION));
 
-// Renomeia a imagem com um identificador único
+
 $fotoBanda = $diretorio . uniqid() . '.' . $tipoDaImagem;
 
 $uploadOK = true;
@@ -193,7 +185,7 @@ if ($uploadOK) {
 
 
         include("conexaoBD.php");
-        // Se estiver tudo certo
+
         if ($tudoCerto && $uploadOK) {
      
 
@@ -303,7 +295,7 @@ if ($uploadOK) {
         }
     
 
-    // Função para evitar SQL Injection
+
     function testar_entrada($dado) {
         $dado = trim($dado);
         $dado = stripslashes($dado);

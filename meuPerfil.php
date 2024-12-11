@@ -3,7 +3,7 @@ include("validarSessao.php");
 include("header.php");
 include("conexaoBD.php");
 
-// Verifica se o ID da empresa está na sessão
+
 if (!isset($_SESSION['idEmpresa'])) {
     echo "Erro: Empresa não encontrada.";
     exit;
@@ -11,7 +11,7 @@ if (!isset($_SESSION['idEmpresa'])) {
 
 $idEmpresa = $_SESSION['idEmpresa'];
 
-// Consulta ao banco de dados para obter os dados da empresa logada
+
 $sql = "SELECT * FROM empresas WHERE idEmpresa = ?";
 $stmt = $link->prepare($sql);
 $stmt->bind_param("i", $idEmpresa);
@@ -27,13 +27,13 @@ if ($result->num_rows > 0) {
 ?>
 
 <body>
-<!-- Page Container -->
+
 <div class="w3-content w3-margin-top" style="max-width:1700px;">
 
-  <!-- The Grid -->
+
   <div class="w3-row-padding">
 
-    <!-- Left Column -->
+  
     <div class="w3-third">
       <div class="w3-white w3-text-grey w3-card-4">
         <div class="w3-display-container">
@@ -47,8 +47,7 @@ if ($result->num_rows > 0) {
           <p><img src="icones/iconStar.png" width="20" height="20">&nbsp;
           <?php
 
-          
-      // Tipos de empresa
+      
       $tiposEmpresa = [];
       if ((int)$empresa['bar'] === 1) $tiposEmpresa[] = "Bar";
       if ((int)$empresa['lanchonete'] === 1) $tiposEmpresa[] = "Lanchonete";
@@ -66,16 +65,16 @@ if ($result->num_rows > 0) {
 <?php
     $cnpj = $empresa['cnpjEmpresa'];
     
-    // Remove qualquer caractere que não seja número
+   
     $cnpj = preg_replace('/\D/', '', $cnpj);
     
-    // Verifica se o CNPJ tem 14 dígitos
+    
     if (strlen($cnpj) == 14) {
-        // Formata o CNPJ para o formato: XX.XXX.XXX/XXXX-XX
+        
         $cnpjFormatado = substr($cnpj, 0, 2) . '.' . substr($cnpj, 2, 3) . '.' . substr($cnpj, 5, 3) . '/' . substr($cnpj, 8, 4) . '-' . substr($cnpj, 12, 2);
         echo htmlspecialchars($cnpjFormatado);
     } else {
-        // Caso o CNPJ não tenha 14 dígitos, exibe ele sem formatação
+        
         echo htmlspecialchars($cnpj);
     }
 ?>
@@ -87,7 +86,7 @@ if ($result->num_rows > 0) {
       <br>
     </div>
 
-    <!-- Right Column -->
+  
     <div class="w3-twothird">
       <div class="jumbotron text-left">
         <h2><strong>&nbsp;&nbsp;FOTOS</strong></h2>
@@ -154,12 +153,12 @@ if ($result->num_rows > 0) {
     </div>
 </div>
 <br>
-        <!-- Formulário de exclusão com confirmação em JavaScript -->
+        
         <div class="jumbotron text-center">
           <div class="container">
             <div class="row mb-3">
               <div class="col-12 col-md-10 col-lg-8 mx-auto">
-                <!-- O botão não envia o formulário diretamente, mas chama a função JavaScript -->
+               
                 <button type="button" class="btn btn-danger btn-lg w-100 text-dark" onclick="confirmarExclusao()">
                     <strong>Excluir Conta</strong>
                 </button>
@@ -169,11 +168,11 @@ if ($result->num_rows > 0) {
         </div>
 
         <script>
-       // Função para confirmar exclusão de conta
+    
 function confirmarExclusao() {
     var resposta = confirm("Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.");
     if (resposta) {
-        // Envia a requisição AJAX para excluir a conta
+      
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "excluirContaEmpresa.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -181,16 +180,16 @@ function confirmarExclusao() {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 var response = xhr.responseText;
                 if (response == 'success') {
-                    // Se a exclusão for bem-sucedida, redireciona para a página de logout ou outra página
-                    window.location.href = 'logout.php'; // ou qualquer página após a exclusão
+                  
+                    window.location.href = 'logout.php'; 
                 } else {
                     alert("Erro ao excluir conta: " + response);
                 }
             }
         };
-        xhr.send("excluirContaEmpresa=true"); // Envia o dado 'excluirConta' para o PHP
+        xhr.send("excluirContaEmpresa=true");
     } else {
-        // Se o usuário clicar em "Não", nada acontece
+        
         return;
     }
 }

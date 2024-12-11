@@ -1,5 +1,5 @@
 <?php
-    session_start(); //Inicia uma sessão
+    session_start(); 
     if (!isset($_SESSION["emailBanda"])){
         header('location:loginBanda.php?pagina=loginBanda&erroLogin=naoLogado');
     }

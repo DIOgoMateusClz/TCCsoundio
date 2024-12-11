@@ -4,9 +4,9 @@ include("validarSessao.php");
 include ("header.php");
 include("conexaoBD.php");
 
-$idEmpresa = $_SESSION['idEmpresa']; // Recebe o ID da empresa que está logada
+$idEmpresa = $_SESSION['idEmpresa']; 
 
-// Buscar dados da empresa no banco de dados
+
 $buscarDadosEmpresa = "SELECT * FROM empresas WHERE idEmpresa = $idEmpresa";
 $res = mysqli_query($link, $buscarDadosEmpresa) or die("<div class='alert alert-danger'>Erro ao tentar buscar dados da <strong>Empresa</strong></div>");
 
@@ -42,8 +42,8 @@ if($registro = mysqli_fetch_assoc($res)){
     </div>
 
     <div class="form-group">
-        <img src="<?php echo $fotoEmpresa; ?>" width="100"> <!-- Exibe a FOTO ATUAL cadastrada -->
-        <input type="hidden" name="fotoAtual" value="<?php echo $fotoEmpresa; ?>"> <!-- Passa o local-->
+        <img src="<?php echo $fotoEmpresa; ?>" width="100"> 
+        <input type="hidden" name="fotoAtual" value="<?php echo $fotoEmpresa; ?>"> 
         <input type="file" class="btn btn-link" name="fotoEmpresa">
     </div>
 
@@ -90,7 +90,7 @@ if($registro = mysqli_fetch_assoc($res)){
     </select>
     <label for="cidadeEmpresa" class="form-label">*Cidade:</label>
 </div>
-<!-- Script JavaScript -->
+
 <script>
     const cidadesPorEstado = {
         'AC': ['Rio Branco', 'Cruzeiro do Sul', 'Senador Guiomard', 'Plácido de Castro', 'Tarauacá', 'Xapuri', 'Feijó', 'Brasiléia', 'Epitaciolândia'],

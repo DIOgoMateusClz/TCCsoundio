@@ -50,28 +50,26 @@
 
 include("conexaoBD.php");
 
-// Verificando se o formulário de busca foi submetido
+
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $generos = isset($_GET['generos']) ? $_GET['generos'] : [];
 $estado = isset($_GET['estado']) ? $_GET['estado'] : '';
 
-// Consulta SQL básica
+
 $sql = "SELECT idBanda, nomeBanda, fotoBanda, rock, heavyMetal, punk, hardcore, sertanejo, pagode, samba, gospel, rap, funk, MPB, estadoBanda 
         FROM bandas 
         WHERE nomeBanda LIKE ?";
 
-// Inicializando os parâmetros para o bind
+
 $params = ['%' . $search . '%'];
 $paramTypes = 's';
 
-// Se algum gênero for selecionado, adicionamos ao SQL
 if (!empty($generos)) {
     $generoConditions = [];
     foreach ($generos as $genero) {
-        $generoConditions[] = "$genero = 1";  // Verifica se o gênero está marcado
+        $generoConditions[] = "$genero = 1"; 
     }
 
-    // Adiciona a condição para os gêneros selecionados
     $sql .= " AND (" . implode(" OR ", $generoConditions) . ")";
 }
 if ($estado) {
@@ -79,28 +77,22 @@ if ($estado) {
   $params[] = $estado;
   $paramTypes .= 's';
 }
-// Ordenação
+
 $sql .= " ORDER BY nomeBanda ASC";
 
-// Preparando a consulta
 $stmt = $link->prepare($sql);
 
-// Ajuste para usar os parâmetros dinamicamente
 if (!empty($generos)) {
-    // Para os gêneros, precisamos adicionar mais tipos e parâmetros ao bind
     $stmt->bind_param($paramTypes, ...$params);
 } else {
-    // Se não há gêneros, apenas o parâmetro do nome
     $stmt->bind_param($paramTypes, ...$params);
 }
 
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Exibindo o resultado
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
-        // Gêneros da banda
         $generos = [];
         if ($row['rock']) $generos[] = "Rock";
         if ($row['heavyMetal']) $generos[] = "Heavy Metal";
@@ -116,7 +108,6 @@ if ($result->num_rows > 0) {
 
         $generosTexto = implode(", ", $generos);
 
-        // Exibindo a banda
         echo '
         <div class="d-flex align-items-start mb-4">
             <div class="me-3">
@@ -136,7 +127,6 @@ if ($result->num_rows > 0) {
 }
 
 
-// Fechando a conexão corretamente
 $stmt->close();
 $link->close();
 ?>

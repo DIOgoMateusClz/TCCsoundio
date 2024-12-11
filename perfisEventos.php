@@ -3,16 +3,16 @@ include("validarSessao.php");
 include("header.php"); 
 include("conexaoBD.php");
 
-// Verifica se o ID do evento foi passado na URL
+
 if (!isset($_GET['idEvento'])) {
     echo "Erro: Evento não encontrado.";
     exit;
 }
 
-// Obtém o ID do evento da URL
+
 $idEvento = $_GET['idEvento'];
 
-// Consulta para obter os detalhes do evento, incluindo estado e cidade da empresa
+
 $sql = "SELECT e.nomeEvento, e.dataEvento, e.horaEvento, e.precoEvento, e.localEvento, e.descricaoEvento, e.fotoEvento, 
                b.nomeBanda, emp.nomeEmpresa, emp.estadoEmpresa, emp.cidadeEmpresa, b.idBanda, emp.idEmpresa
         FROM eventos e
@@ -30,7 +30,7 @@ if ($result->num_rows == 0) {
     exit;
 }
 
-// Obtém os detalhes do evento
+
 $evento = $result->fetch_assoc();
 ?>
 
@@ -72,7 +72,7 @@ $evento = $result->fetch_assoc();
 
 <div class="container text-center">
     <div style="margin-top:30px; margin-bottom:30px;">
-        <!-- Botão que leva à lista de eventos -->
+      
         <a href="eventos.php?eventos" class="btn btn-outline-dark btn-lg">Voltar para Eventos</a>
     </div>
 </div>

@@ -1,9 +1,9 @@
 <?php
 include("header.php");
-include("validarSessao.php"); // Verifica se o usuário está logado
-include("conexaoBD.php"); // Conexão com o banco de dados
+include("validarSessao.php"); 
+include("conexaoBD.php"); 
 
-// Obtém o ID da empresa logada da sessão
+
 if (!isset($_SESSION['idEmpresa'])) {
     echo "Erro: Empresa não encontrada. Faça login novamente.";
     exit;
@@ -28,7 +28,7 @@ $idEmpresa = $_SESSION['idEmpresa'];
         <br>
 
         <?php
-        // Consulta SQL para obter eventos criados pela empresa logada
+      
         $sql = "SELECT e.idEvento, e.nomeEvento, e.dataEvento, e.fotoEvento 
                 FROM eventos e
                 WHERE e.idEmpresa = ?";

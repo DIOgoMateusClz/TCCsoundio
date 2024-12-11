@@ -3,19 +3,19 @@ include("validarSessao.php");
 include("header.php"); 
 include("conexaoBD.php");
 
-// Verifica se o ID do evento foi passado na URL
+
 if (!isset($_GET['idEvento'])) {
     echo "Erro: Evento não encontrado.";
     exit;
 }
 
-// Obtém o ID do evento da URL
+
 $idEvento = $_GET['idEvento'];
 
-// Obtém o ID da empresa logada na sessão
+
 $idEmpresaLogada = $_SESSION['idEmpresa'] ?? null;
 
-// Consulta para obter os detalhes do evento, incluindo estado e cidade da empresa que criou o evento
+
 $sql = "SELECT e.nomeEvento, e.dataEvento, e.horaEvento, e.precoEvento, e.localEvento, e.descricaoEvento, e.fotoEvento, 
                b.nomeBanda, emp.nomeEmpresa, emp.estadoEmpresa, emp.cidadeEmpresa, e.idEmpresa
         FROM eventos e
@@ -33,15 +33,14 @@ if ($result->num_rows == 0) {
     exit;
 }
 
-// Obtém os detalhes do evento
+
 $evento = $result->fetch_assoc();
 
-// Verifica se a empresa logada é a mesma que criou o evento
+
 $isEmpresaAutorizada = ($idEmpresaLogada && $evento['idEmpresa'] == $idEmpresaLogada);
 
-// Excluir evento se o formulário for enviado e a empresa for a mesma que criou o evento
 if ($isEmpresaAutorizada && isset($_POST['excluirEvento'])) {
-    // Excluir o evento do banco de dados
+  
     $deleteSql = "DELETE FROM eventos WHERE idEvento = ?";
     $deleteStmt = $link->prepare($deleteSql);
     $deleteStmt->bind_param("i", $idEvento);

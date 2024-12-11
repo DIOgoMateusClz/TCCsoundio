@@ -2,7 +2,7 @@
 session_start();
 include("conexaoBD.php");
 
-// Verifica se o ID da empresa está na sessão
+
 if (!isset($_SESSION['idEmpresa'])) {
     echo "Erro: Empresa não encontrada.";
     exit;
@@ -10,9 +10,8 @@ if (!isset($_SESSION['idEmpresa'])) {
 
 $idEmpresa = $_SESSION['idEmpresa'];
 
-// Verifica se há arquivos enviados
+
 if (isset($_FILES['novasFotos']) && !empty($_FILES['novasFotos']['name'][0])) {
-    // Consulta a galeria atual da empresa
     $sql = "SELECT galeriaEmpresa FROM empresas WHERE idEmpresa = ?";
     $stmt = $link->prepare($sql);
     $stmt->bind_param("i", $idEmpresa);
@@ -27,22 +26,18 @@ if (isset($_FILES['novasFotos']) && !empty($_FILES['novasFotos']['name'][0])) {
         exit;
     }
     
-    // Diretório onde as fotos serão salvas
     $diretorioUpload = 'uploads/';
     if (!is_dir($diretorioUpload)) {
         mkdir($diretorioUpload, 0755, true);
     }
 
-    // Calcula o próximo índice para nomear as novas fotos
     $numFotosExistentes = count($fotosExistentes);
     $indiceFoto = $numFotosExistentes + 1;
 
-    // Armazena os caminhos das novas fotos para atualizar no banco de dados
     $fotosNovas = [];
     foreach ($_FILES['novasFotos']['tmp_name'] as $key => $tmpName) {
-        if ($indiceFoto > 6) break; // Limite de 6 fotos
+        if ($indiceFoto > 6) break; 
 
-    // Define o nome da foto com índice crescente (1, 2, 3, ...) e extensão adequada
 $extensaoPermitida = ['image/jpg' => 'jpg', 'image/png' => 'png', 'image/jpeg' => 'jpeg','image/webp' => 'webp'];
 $tipoArquivo = mime_content_type($tmpName);
 
@@ -51,7 +46,6 @@ if (array_key_exists($tipoArquivo, $extensaoPermitida)) {
     $nomeArquivo = $indiceFoto . "." . $extensao;
     $caminhoArquivo = $diretorioUpload . $nomeArquivo;
 
-    // Move o arquivo para o diretório com o nome definido
     if (move_uploaded_file($tmpName, $caminhoArquivo)) {
         $fotosNovas[] = $caminhoArquivo;
         $indiceFoto++;
@@ -60,12 +54,12 @@ if (array_key_exists($tipoArquivo, $extensaoPermitida)) {
     echo "Erro: Formato de arquivo não suportado.";
 }
 /*
-    // Atualiza a galeria com as novas fotos, mantendo o limite de 6
+
     $novaGaleria = array_merge($fotosExistentes, $fotosNovas);
     $novaGaleria = array_slice($novaGaleria, 0, 6); // Garante no máximo 6 fotos
     $galeriaAtualizada = implode(',', $novaGaleria);
 
-    // Atualiza a coluna `galeriaEmpresa` no banco de dados
+
     $sqlUpdate = "UPDATE empresas SET galeriaEmpresa = ? WHERE idEmpresa = ?";
     $stmtUpdate = $link->prepare($sqlUpdate);
     $stmtUpdate->bind_param("si", $galeriaAtualizada, $idEmpresa);
@@ -80,7 +74,6 @@ if (array_key_exists($tipoArquivo, $extensaoPermitida)) {
     $stmtUpdate->close();
     $link->close();
 
-    // Redireciona para a página anterior
     header("Location: meuPerfil.php");
     exit;
 } else {

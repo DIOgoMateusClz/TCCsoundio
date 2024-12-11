@@ -23,11 +23,7 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
---
--- Estrutura para tabela `bandas`
---
 
--- Estrutura para a tabela `bandas`
 CREATE TABLE IF NOT EXISTS `bandas` (
   `idBanda` int(11) NOT NULL AUTO_INCREMENT,
   `fotoBanda` varchar(300) NOT NULL,
@@ -53,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `bandas` (
   PRIMARY KEY (`idBanda`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dados corrigidos para a tabela `bandas`
+
 INSERT INTO `bandas` 
 (`fotoBanda`, `nomeBanda`, `descricaoBanda`, `cidadeBanda`, `estadoBanda`, `telefoneBanda`, `rock`, `heavyMetal`, `punk`, `hardcore`, `sertanejo`, `pagode`, `samba`, `gospel`, `rap`, `funk`, `MPB`, `emailBanda`, `senhaBanda`) 
 VALUES
@@ -64,11 +60,7 @@ VALUES
 ('img/logoEufoniks.png', 'Eufoniks', 'asdasdad', 'Florianópolis', 'SC', '44444444444', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'eufoniks@gmail.com', '202cb962ac59075b964b07152d234b70'),
 ('img/killers.jpg', 'Iron Maiden', 'dasdasdasdas', 'Xique-Xique', 'BA', '55555555555', 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 'ironmaiden@gmail.com', '202cb962ac59075b964b07152d234b70');
 
--- --------------------------------------------------------
 
---
--- Estrutura para tabela `empresas`
---
 
 CREATE TABLE IF NOT EXISTS `empresas` (
   `idEmpresa` int(11) NOT NULL,
@@ -92,9 +84,7 @@ CREATE TABLE IF NOT EXISTS `empresas` (
   PRIMARY KEY (`idEmpresa`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Despejando dados para a tabela `empresas`
---
+
 
 INSERT INTO `empresas` (`fotoEmpresa`, `nomeEmpresa`, `cnpjEmpresa`, `cepEmpresa`, `cidadeEmpresa`, `estadoEmpresa`, `telefoneEmpresa`, `descricaoEmpresa`, `bar`, `lanchonete`, `restaurante`, `casadeShows`, `pizzaria`, `centrodeEventos`, `emailEmpresa`, `senhaEmpresa`) VALUES
 ('img/bunkerLogo.png', 'Bunker Beer', '12311111111111', '12312312', 'Telêmaco Borba', 'PR', '54532232231', 'cdfdfdfdfdfdfdfdfd', 1, 1, 0, 0, 0, 0, 'bunker@gmail.com', '202cb962ac59075b964b07152d234b70'),
@@ -103,11 +93,7 @@ INSERT INTO `empresas` (`fotoEmpresa`, `nomeEmpresa`, `cnpjEmpresa`, `cepEmpresa
 ('img/texas.jpg', 'Texas', '33333333333333', '12312312', 'Telêmaco Borba', 'PR', '123123123123', 'cdfdfdfdfdfdfdfdfd', 0, 1, 0, 1, 0, 1, 'texas@gmail.com', '202cb962ac59075b964b07152d234b70'),
 ('img/liminha.jpg', 'Liminha Bar', '44444444444444', '4343434', 'Rio de Janeiro', 'RJ', '12312312312', 'bonononono', 1, 0, 0, 1, 0, 0, 'liminha@gmail.com', '202cb962ac59075b964b07152d234b70');
 
--- --------------------------------------------------------
 
---
--- Estrutura para tabela `estados`
---
 
 CREATE TABLE IF NOT EXISTS `estados` (
   `siglaEstado` char(2) NOT NULL,
@@ -115,8 +101,6 @@ CREATE TABLE IF NOT EXISTS `estados` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
--- Despejando dados para a tabela `estados`
---
 
 INSERT INTO IF NOT EXISTS `estados` (`siglaEstado`, `nomeEstado`) VALUES
 ('AC', 'Acre'),
@@ -428,9 +412,7 @@ INSERT INTO IF NOT EXISTS `cidades` (`nomeCidade`, `id`) VALUES
 ('Xambioá', 268);
 
 
---
--- Estrutura para tabela `eventos`
---
+
 
 CREATE TABLE IF NOT EXISTS `soundio2`.`eventos` (
   `idEvento` INT NOT NULL AUTO_INCREMENT,
@@ -460,70 +442,45 @@ CREATE TABLE IF NOT EXISTS `soundio2`.`eventos` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
---
--- Índices para tabelas despejadas
---
--- Adicionando o campo 'tipoUsuario' à tabela 'bandas'
+
 ALTER TABLE `bandas`
 ADD `tipoUsuario` VARCHAR(10) NOT NULL DEFAULT 'banda';
 
--- Adicionando o campo 'tipoUsuario' à tabela 'empresas'
+
 ALTER TABLE `empresas`
 ADD `tipoUsuario` VARCHAR(10) NOT NULL DEFAULT 'empresa';
---
--- Índices de tabela `bandas`
---
+
 ALTER TABLE `bandas`
   ADD PRIMARY KEY (`idBanda`);
 
---
--- Índices de tabela `empresas`
---
+
 ALTER TABLE `empresas`
   ADD PRIMARY KEY (`idEmpresa`),
   ADD KEY `fk_estado_empresa` (`estadoEmpresa`);
 
---
--- Índices de tabela `estados`
---
+
 ALTER TABLE `estados`
   ADD PRIMARY KEY (`siglaEstado`);
 
---
--- Índices de tabela `eventos`
---
+
 ALTER TABLE `eventos`
   ADD PRIMARY KEY (`idEvento`);
 
---
--- AUTO_INCREMENT para tabelas despejadas
---
 
---
--- AUTO_INCREMENT de tabela `bandas`
---
 ALTER TABLE `bandas`
   MODIFY `idBanda` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
---
--- AUTO_INCREMENT de tabela `empresas`
---
+
 ALTER TABLE `empresas`
   MODIFY `idEmpresa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
---
--- AUTO_INCREMENT de tabela `eventos`
---
+
 ALTER TABLE `eventos`
   MODIFY `idEvento` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- Restrições para tabelas despejadas
---
+
 ALTER TABLE `cidades` ADD `id` INT AUTO_INCREMENT PRIMARY KEY;
---
--- Restrições para tabelas `empresas`
---
+
 ALTER TABLE `empresas`
   ADD CONSTRAINT `fk_estado_empresa` FOREIGN KEY (`estadoEmpresa`) REFERENCES `estados` (`siglaEstado`);
 COMMIT;

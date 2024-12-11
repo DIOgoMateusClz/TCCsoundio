@@ -8,16 +8,16 @@
     <div class="jumbotron text-left">
         <h2 class="mb-4"><strong>Eventos</strong></h2>
         <form class="d-flex flex-column" method="GET" action="">
-            <!-- Campo de pesquisa -->
+    
             <input class="form-control me-2" type="text" name="search" placeholder="Buscar eventos...">
 
-            <!-- Filtro de Estado -->
+   
             <div class="mt-3">
                 <label for="estado">Estado:</label>
                 <select class="form-control" name="estado" id="estado">
                     <option value="">Selecione o Estado</option>
                     <?php
-                        // Consulta para obter os estados das empresas
+           
                         $sqlEstados = "SELECT siglaEstado, nomeEstado FROM estados ORDER BY nomeEstado";
                         $resultEstados = $link->query($sqlEstados);
                         while ($estado = $resultEstados->fetch_assoc()) {
@@ -27,13 +27,13 @@
                 </select>
             </div>
 
-            <!-- Filtro de Data Início -->
+     
             <div class="mt-3">
                 <label for="dataInicio">Data Início:</label>
                 <input class="form-control" type="date" name="dataInicio" id="dataInicio" value="<?php echo isset($_GET['dataInicio']) ? $_GET['dataInicio'] : ''; ?>">
             </div>
 
-            <!-- Botões de busca -->
+      
             <div class="mt-3">
                 <button type="submit" class="btn btn-outline-dark">Buscar</button>
                 <button class="btn btn-outline-dark" onclick="window.location.href='eventos.php';" type="button">Ver tudo</button>
@@ -41,12 +41,12 @@
         </form>
 
         <?php
-        // Obtendo os parâmetros de pesquisa, estado e data
+  
         $search = isset($_GET['search']) ? $_GET['search'] : '';
         $estado = isset($_GET['estado']) ? $_GET['estado'] : '';
         $dataInicio = isset($_GET['dataInicio']) ? $_GET['dataInicio'] : '';
 
-        // Construindo a consulta SQL
+
         $sql = "SELECT e.idEvento, e.nomeEvento, e.horaEvento, e.dataEvento, e.descricaoEvento, e.precoEvento, e.fotoEvento, e.localEvento, 
                        emp.idEmpresa, emp.nomeEmpresa, emp.estadoEmpresa, emp.cidadeEmpresa, b.idBanda, b.nomeBanda
                 FROM eventos e
@@ -54,12 +54,12 @@
                 LEFT JOIN bandas b ON e.idBanda = b.idBanda
                 WHERE e.nomeEvento LIKE ?";
 
-        // Se o estado foi selecionado, adiciona o filtro na consulta SQL
+     
         if ($estado != '') {
             $sql .= " AND emp.estadoEmpresa = ?";
         }
 
-        // Se a data de início foi selecionada, adiciona o filtro de data na consulta SQL
+       
         if ($dataInicio != '') {
             $sql .= " AND e.dataEvento >= ?";
         }
@@ -67,7 +67,7 @@
         $stmt = $link->prepare($sql);
         $searchParam = '%' . $search . '%';
 
-        // Bind dos parâmetros de busca, estado e data de início
+
         if ($estado != '' && $dataInicio != '') {
             $stmt->bind_param("sss", $searchParam, $estado, $dataInicio);
         } elseif ($estado != '') {
@@ -82,7 +82,7 @@
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
-            // Exibindo eventos encontrados
+ 
             while ($row = $result->fetch_assoc()) {
                 echo '
                 <div class="media mb-5 p-3 border rounded bg-light">

@@ -3,16 +3,16 @@ include("validarSessao.php");
 include("header.php"); 
 include("conexaoBD.php");
 
-// Certifique-se de que o ID da empresa está na sessão
+
 if (!isset($_SESSION['idEmpresa'])) {
     echo "Erro: Empresa não encontrada. Faça login novamente.";
     exit;
 }
 
-// Obtém o ID da empresa logada
+
 $idEmpresa = $_SESSION['idEmpresa'];
 
-// Busca todas as bandas cadastradas no banco de dados
+
 $sql = "SELECT idBanda, nomeBanda FROM bandas";
 $result = $link->query($sql);
 
@@ -21,7 +21,7 @@ if ($result === false) {
     exit;
 }
 
-// Prepara as bandas para enviar ao JavaScript
+
 $bandas = [];
 while ($row = $result->fetch_assoc()) {
     $bandas[] = $row;
@@ -84,15 +84,15 @@ while ($row = $result->fetch_assoc()) {
         </script>
 
         <script>
-            // Passando as bandas do PHP para o JavaScript
+   
             const bandas = <?php echo json_encode($bandas); ?>;
 
             function filtrarBandas() {
                 const input = document.getElementById('searchBanda').value.toLowerCase();
                 const lista = document.getElementById('resultadosBandas');
-                lista.innerHTML = ''; // Limpar os resultados anteriores
+                lista.innerHTML = ''; 
 
-                // Filtrar as bandas localmente
+   
                 const resultados = bandas.filter(banda => 
                     banda.nomeBanda.toLowerCase().includes(input)
                 );
@@ -105,7 +105,7 @@ while ($row = $result->fetch_assoc()) {
                         li.onclick = () => {
                             document.getElementById('searchBanda').value = banda.nomeBanda;
                             document.getElementById('idBandaSelecionada').value = banda.idBanda;
-                            lista.innerHTML = ''; // Limpar a lista após a seleção
+                            lista.innerHTML = '';
                         };
                         lista.appendChild(li);
                     });
@@ -122,7 +122,7 @@ while ($row = $result->fetch_assoc()) {
             <label for="searchBanda" class="form-label">*Selecione a Banda:</label>
             <input type="text" id="searchBanda" class="form-control" placeholder="Digite o nome da banda..." onkeyup="filtrarBandas()">
             <ul id="resultadosBandas" class="list-group mt-2" style="max-height: 200px; overflow-y: auto;">
-                <!-- Resultados das bandas serão inseridos aqui -->
+         
             </ul>
             <input type="hidden" name="idBanda" id="idBandaSelecionada" required>
         </div>

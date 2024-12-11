@@ -5,11 +5,11 @@
 <body>
 <div class="w3-content w3-margin-top" style="max-width:1700px;">
   <?php
-    // Obtendo o ID da empresa a partir da URL
+
     $id = isset($_GET['idBanda']) ? intval($_GET['idBanda']) : 0;
 
     if ($id > 0) {
-        // Consulta para obter informações da empresa com base no ID
+  
         $sql = "SELECT idBanda, fotoBanda, nomeBanda, descricaoBanda, cidadeBanda, estadoBanda, telefoneBanda, rock, heavyMetal,
         punk, hardcore, sertanejo, pagode, samba, gospel, rap, funk, MPB, galeriaBanda, emailBanda, senhaBanda
                 FROM bandas WHERE idBanda = $id";
@@ -25,7 +25,7 @@
             $estadoBanda = $row["estadoBanda"];
             $telefoneBanda = $row["telefoneBanda"];
          
-            // Generos
+            
             $genero = [];
             if ($row['rock']) $genero[] = "Rock";
             if ($row['heavyMetal']) $genero[] = "Heavy Metal";
@@ -50,9 +50,9 @@
     }
   ?>
 
-  <!-- Layout principal -->
+
   <div class="w3-row-padding">
-    <!-- Coluna da esquerda -->
+
     <div class="w3-third">
       <div class="w3-white w3-text-grey w3-card-4">
         <div class="w3-display-container">
@@ -72,13 +72,13 @@
       <br>
     </div>
 
-    <!-- Coluna da direita -->
+
     <div class="w3-twothird">
       <div class="jumbotron text-left">
         <h2><strong>&nbsp;&nbsp;FOTOS</strong></h2>
         <div class="w3-row-padding">
             <?php
-            // Dividindo a galeria de fotos
+     
             $fotos = explode(',', $galeriaBanda);
             $numFotos = count($fotos);
             for ($i = 0; $i < 6; $i++) {
@@ -113,7 +113,7 @@
 </div>
     <br>
 </div>
-      <!-- Descrição e Endereço -->
+    
       <div class="container">
         <h2><strong>DESCRIÇÃO</strong></h2>
         <blockquote>

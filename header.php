@@ -21,14 +21,13 @@
         ?>
     </title>
 
-    <!-- Bootstrap e W3.CSS -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
-    <!-- Máscaras -->
     <script>
         $(document).ready(function () {
             $("#telefoneBanda, #telefoneEmpresa").mask("(00) 00000-0000");
@@ -39,14 +38,14 @@
 </head>
 
 <body class="w3-theme-l3 bg-white">
-    <!-- Logo centralizada com responsividade -->
+
     <div class="container my-5 text-center">
         <a href="inicio.php?pagina=inicio" title="Ir para o início">
             <img src="img/logo.png" class="img-fluid" width="400" alt="Logo Soundio">
         </a>
     </div>
 
-    <!-- Navbar -->
+
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
@@ -71,11 +70,11 @@
                     <li class="nav-item">
     <a class="nav-link <?php if ($pagina == 'eventos') echo 'active'; ?>" href="<?php 
                         if (isset($_SESSION['emailEmpresa'])) {
-                          echo 'eventos.php?pagina=eventos'; // Link para a empresa
+                          echo 'eventos.php?pagina=eventos'; 
                         } elseif (isset($_SESSION['emailBanda'])) {
-                             echo 'eventosBanda.php?pagina=eventosBanda'; // Link para a banda
+                             echo 'eventosBanda.php?pagina=eventosBanda'; 
                          } else {
-                       echo '#'; // Caso não esteja logado
+                       echo '#'; 
                         }
                         ?>">
                       Eventos
@@ -110,12 +109,12 @@
         </div>
     </nav>
 
-    <!-- Conteúdo Principal -->
+
     <div class="w3-container w3-content" style="max-width:1500px; margin-top:40px;">
         <div class="w3-row">
             <div class="w3-col m16">
             <div class="w3-container w3-card w3-white w3-round w3-margin">
-    <!-- Conteúdo dinâmico das páginas será inserido aqui -->
+
 </div>
             </div>
         </div>

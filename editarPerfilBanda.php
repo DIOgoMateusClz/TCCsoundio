@@ -6,7 +6,7 @@
 
 $idBanda = $_SESSION['idBanda'];
         
-// Exemplo corrigido de como buscar dados
+
 $buscarDadosBanda = "SELECT * FROM bandas WHERE idBanda = $idBanda";
 $res = mysqli_query($link, $buscarDadosBanda) or die("<div class='alert alert-danger'>Erro ao tentar buscar dados da <strong>Banda</strong></div>");
 
@@ -47,8 +47,8 @@ if ($registro = mysqli_fetch_assoc($res)) {
         </div>
 
         <div class="form-group">
-            <img src="<?php echo $fotoBanda; ?>" width="100"> <!-- Exibe a FOTO ATUAL cadastrada -->
-            <input type="hidden" name="fotoAtual" value="<?php echo $fotoBanda; ?>"> <!-- Passa o local-->
+            <img src="<?php echo $fotoBanda; ?>" width="100"> 
+            <input type="hidden" name="fotoAtual" value="<?php echo $fotoBanda; ?>"> 
             <input type="file" class="btn btn-link" name="fotoBanda">
         </div>
 
@@ -92,7 +92,7 @@ if ($registro = mysqli_fetch_assoc($res)) {
 
 
 
-<!-- Script JavaScript -->
+
 <script>
     const cidadesPorEstado = {
         'AC': ['Rio Branco', 'Cruzeiro do Sul', 'Senador Guiomard', 'Plácido de Castro', 'Tarauacá', 'Xapuri', 'Feijó', 'Brasiléia', 'Epitaciolândia'],

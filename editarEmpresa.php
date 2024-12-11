@@ -10,15 +10,15 @@ if (isset($_SESSION['idEmpresa'])) {
     exit;
 }
 
-// Carregar os valores atuais da empresa do banco de dados
+
 $query = "SELECT * FROM empresas WHERE idEmpresa = $idEmpresa";
 $result = mysqli_query($link, $query);
 $currentValues = mysqli_fetch_assoc($result);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $fieldsToUpdate = []; // Array para campos e valores preenchidos
+    $fieldsToUpdate = []; 
 
-    // Validação e inclusão de campos
+
     if (!empty($_POST["nomeEmpresa"])) {
         $nomeEmpresa = testar_entrada($_POST["nomeEmpresa"]);
         $fieldsToUpdate[] = "nomeEmpresa = '$nomeEmpresa'";
@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fieldsToUpdate[] = "descricaoEmpresa = '$descricaoEmpresa'";
     }
 
-    // Processamento da foto principal
+
     if (!empty($_FILES["fotoEmpresa"]["name"])) {
         $fotoEmpresa = 'uploads/' . basename($_FILES["fotoEmpresa"]["name"]);
         if (move_uploaded_file($_FILES["fotoEmpresa"]["tmp_name"], $fotoEmpresa)) {
@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // Tipos de locais (checkboxes)
+
     $fieldsToUpdate[] = "bar = " . (isset($_POST["bar"]) ? 1 : (isset($currentValues['bar']) ? $currentValues['bar'] : 0));
     $fieldsToUpdate[] = "lanchonete = " . (isset($_POST["lanchonete"]) ? 1 : (isset($currentValues['lanchonete']) ? $currentValues['lanchonete'] : 0));
     $fieldsToUpdate[] = "restaurante = " . (isset($_POST["restaurante"]) ? 1 : (isset($currentValues['restaurante']) ? $currentValues['restaurante'] : 0));
@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!empty($_POST["senhaEmpresa"]) && !empty($_POST["confirmarSenhaEmpresa"])) {
         if ($_POST["senhaEmpresa"] === $_POST["confirmarSenhaEmpresa"]) {
-            // Usando md5 para criptografar a senha
+
             $senhaEmpresa = md5(testar_entrada($_POST["senhaEmpresa"]));
             $fieldsToUpdate[] = "senhaEmpresa = '$senhaEmpresa'";
         } else {
@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-// Executar a atualização no banco
+
 if (!empty($fieldsToUpdate)) {
     $query = "UPDATE empresas SET " . implode(", ", $fieldsToUpdate) . " WHERE idEmpresa = $idEmpresa";
     
