@@ -94,7 +94,7 @@
                 echo '
                 <div class="media mb-5 p-3 border rounded bg-light">
                     <div class="row w-300">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <img src="' . $row["fotoEvento"] . '" class="rounded w-200" alt="' . $row["nomeEvento"] . '" height="300">
                         </div>
                         <div class="col-md-8">
